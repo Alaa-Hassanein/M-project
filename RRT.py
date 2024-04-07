@@ -1,4 +1,5 @@
 import pygame
+import time
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
 
@@ -14,12 +15,13 @@ def main():
 
     obstacles=graph.MakeObs()
     map.drawMap(obstacles)
-
     pygame.display.update()
     pygame.event.clear()
-    pyhame.event.wait(0)
+    pygame.event.wait(0)
+    
+    
 
 if __name__ == '__main__':
-    main
+    main()
 
 
