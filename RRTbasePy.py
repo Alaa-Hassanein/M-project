@@ -6,7 +6,7 @@ class RRTMap:
         self.start=start
         self.goal=goal
         self.MapDimentions=MapDimentions
-        self.Maph,self.mapw=self.MapDimentions
+        self.Maph,self.mapw=MapDimentions
 
         #windows settings
         self.mapwindowname='RRT path planing'
@@ -30,8 +30,7 @@ class RRTMap:
 
     def drawMap(self):
         pygame.draw.circle(self.map,self.green,self.start,self.nodeRad+5,0)
-        pygame.draw.circle(self.map,self.green,self.start,self.nodeRad+20,1)
-        
+        pygame.draw.circle(self.map,self.green,self.goal,self.nodeRad+20,1)
         self.drawObs(obstacles)
 
 
@@ -50,7 +49,7 @@ class RRTGraph:
         self.start=start
         self.goal=goal
         self.goalFLage=False
-        self.Maph,self.mapw=self.MapDimentions
+        self.Maph,self.mapw=MapDimentions
         self.x=[]
         self.y=[]
         self.parent=[]
@@ -71,20 +70,20 @@ class RRTGraph:
 
 
     def makeRandomRect(self):
-        uppercornerx=int(random.unidorm(0,self.mapw-self.obsdim))
-        uppercornerx=int(random.unidorm(0,self.mapw-self.obsdim))
+        uppercornerx=int(random.uniform(0,self.mapw-self.obsdim))
+        uppercornerx=int(random.uniform(0,self.mapw-self.obsdim))
         return (uppercornerx,uppercornerx)
 
 
     def MakeObs(self):
         obs=[]
 
-        for i on range(0,self.obsnum):
+        for i in range(0,self.obsnum):
             rectang=None
             startgoalcol = True
             while startgoalcol:
                 upper=self.makeRandomRect()
-                rectang=pygame.rect(upper.(self.obsdim,self.obsdim))
+                rectang=pygame.Rect(upper,(self.obsdim,self.obsdim))
                 if rectang.collidepoint(self.start) or rectang.collidepoint(self.goal):
                     startgoalcol=True
                 else:
