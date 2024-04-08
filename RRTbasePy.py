@@ -125,14 +125,14 @@ class RRTGraph:
         return x,y
 
 
-    def nearst (self,n):
+    def nearest (self,n):
         dmin=self.distance(0,n)
         nnear=0
         for i in range(0,n):
             if self.distance(i,n)<dmin:
                 dmin=self.distance(i,n)
                 nnear=i
-        return i
+        return nnear
 
 
     def isFree (self):
@@ -179,7 +179,7 @@ class RRTGraph:
             theta=math.atan2(py,px)
             (x,y)=(int(xnear+dmax *math.cos(theta)),int(ynear+dmax * math.sin(theta)))
             self.remove_node(nrand)
-            if abs(x-self.goal[0])<35 and abs (y-self.goal[1])<dmax:
+            if abs(x-self.goal[0])<dmax and abs (y-self.goal[1])<dmax:
                 self.add_node(nrand,self.goal[0],self.goal[1])
                 self.goalstate=nrand
                 self.goalFLage=True
@@ -194,7 +194,7 @@ class RRTGraph:
     def bias (self,ngoal):
         n=self.number_of_nodes()
         self.add_node(n,ngoal[0],ngoal[1])
-        nnear=self.nearst(n)
+        nnear=self.nearest(n)
         self.step(nnear,n)
         self.connect(nnear,n)
         return self.x,self.y,self.parent
@@ -205,7 +205,7 @@ class RRTGraph:
         x,y=self.sample_evir()
         self.add_node(n,x,y)
         if self.isFree():
-            xnearest=self.nearst(n)
+            xnearest=self.nearest(n)
             self.step(xnearest,n)
             self.connect(xnearest,n)
         return self.x,self.y,self.parent

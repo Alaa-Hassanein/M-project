@@ -1,5 +1,5 @@
 import pygame
-
+import time
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
 
@@ -29,6 +29,7 @@ def main():
         if iteration % 5==0:
             pygame.display.update()
         iteration +=1
+        #time.sleep(0.5)
 
     pygame.display.update()
     pygame.event.clear()
