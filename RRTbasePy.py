@@ -69,25 +69,25 @@ class RRTGraph:
 
 
     def makeRandomRect(self):
-        uppercornerx=int(random.uniform(0,self.mapw-self.obsdim))
-        uppercornerx=int(random.uniform(0,self.mapw-self.obsdim))
-        return (uppercornerx,uppercornerx)
+        uppercornerx=int(random.randint(0,self.mapw-self.obsdim))
+        uppercornery=int(random.randint(0,self.mapw-self.obsdim))
+        return (uppercornerx,uppercornery)
 
 
     def MakeObs(self):
-        obs =[]
-        for i in range(0,self.obsnum) :
+        obs=[]
+        for i in range(0,self.obsnum):
             rectang=None
-            startgoalcol =True
+            startgoalcol = True
             while startgoalcol:
-                upper = self.makeRandomRect ()
+                upper=self.makeRandomRect()
                 rectang=pygame.Rect(upper,(self.obsdim,self.obsdim))
-            if rectang.collidepoint(self.start) or rectang.collidepoint(self.goal):
-                startgoalcol=True
-            else:
-                startgoalcol=False
+                if rectang.collidepoint(self.start) or rectang.collidepoint(self.goal):
+                    startgoalcol=True
+                else:
+                    startgoalcol=False
             obs.append(rectang)
-        self. obstacles=obs.copy ()
+        self.obstacles=obs.copy()
         return obs
 
                 

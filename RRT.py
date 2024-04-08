@@ -1,5 +1,5 @@
 import pygame
-import time
+
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
 
@@ -18,6 +18,7 @@ def main():
     pygame.display.update()
     pygame.event.clear()
     pygame.event.wait(0)
+    
     
     
 
