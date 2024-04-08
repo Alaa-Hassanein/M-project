@@ -125,8 +125,16 @@ class RRTGraph:
         return x,y
 
 
-    def nearst (self):
-        pass
+    def nearst (self,n):
+        dmin=self.distance(0,n)
+        nnear=0
+        for i in range(0,n):
+            if self.distance(i,n)<dmin:
+                dmin=self.distance(i,n)
+                nnear=i
+        return i
+
+
     def isFree (self):
         n=self.number_of_nodes()-1
         (x,y)=(self.x[n],self.y[n])
@@ -150,9 +158,9 @@ class RRTGraph:
                 if rectang.collidepoint(x,y):
                     return True
         return False
-    def connect (self):
-        (x1,y1)=(self.x1[n1],self.y1[n1])
-        (x2,y2)=(self.x2[n2],self.y2[n2])
+    def connect (self,n1,n2):
+        (x1,y1)=(self.x[n1],self.y[n1])
+        (x2,y2)=(self.x[n2],self.y[n2])
         if self.crossObstacle(x1,x2,y1,y2):
             self.remove_node(n2)
             return False
@@ -161,16 +169,48 @@ class RRTGraph:
             return True
             
 
-    def step (self):
-        pass
+    def step (self,nnear,nrand,dmax=35):
+        d=self.distance(nnear,nrand)
+        if d>dmax:
+            u=dmax/d
+            (xnear,ynear)=(self.x[nnear],self.y[nnear])
+            (xrand,yrand)=(self.x[nrand],self.y[nrand])
+            (px,py)=((xrand-xnear),(yrand-ynear))
+            theta=math.atan2(py,px)
+            (x,y)=(int(xnear+dmax *math.cos(theta)),int(ynear+dmax * math.sin(theta)))
+            self.remove_node(nrand)
+            if abs(x-self.goal[0])<35 and abs (y-self.goal[1])<dmax:
+                self.add_node(nrand,self.goal[0],self.goal[1])
+                self.goalstate=nrand
+                self.goalFLage=True
+            else:
+                self.add_node(nrand,x,y)
+
+
     def pass_to_goal(self):
         pass
     def getpathcoords(self):
         pass
-    def bias (self):
-        pass
+    def bias (self,ngoal):
+        n=self.number_of_nodes()
+        self.add_node(n,ngoal[0],ngoal[1])
+        nnear=self.nearst(n)
+        self.step(nnear,n)
+        self.connect(nnear,n)
+        return self.x,self.y,self.parent
+
+
     def expand (self):
-        pass
+        n=self.number_of_nodes()
+        x,y=self.sample_evir()
+        self.add_node(n,x,y)
+        if self.isFree():
+            xnearest=self.nearst(n)
+            self.step(xnearest,n)
+            self.connect(xnearest,n)
+        return self.x,self.y,self.parent
+
+
     def cost (self):
         pass
 
