@@ -36,10 +36,10 @@ class RRTMap:
        
         
 
-    def drawMap(self,obstacles):
+    def drawMap(self):
         pygame.draw.circle(self.map,self.green,self.start,self.nodeRad+5,0)
         pygame.draw.circle(self.map,self.green,self.goal,self.nodeRad+20,1)
-        self.drawObs(obstacles)
+        
 
 
     def  drawPath (self, path):

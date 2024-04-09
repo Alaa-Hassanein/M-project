@@ -5,9 +5,9 @@ from RRTbasePy import RRTMap
 
 def main():
    
-    dimenstion =(620,900)
-    start =(12,31)
-    goal=(862,591)
+    dimenstion =(704,700)
+    start =(23,100)
+    goal=(679,602)
     obsdim=0
     iteration=0
 
@@ -15,8 +15,7 @@ def main():
     map=RRTMap(start,goal,dimenstion,obsdim)
     graph=RRTGraph(start,goal,dimenstion,obsdim)
 
-    obstacles = graph.MakeObs()
-    map.drawMap(obstacles)
+    map.drawMap()
 
     while(not graph.path_to_goal()):
         if iteration % 10 == 0:
@@ -31,6 +30,8 @@ def main():
             pygame.display.update()
         iteration +=1
     map.drawPath(graph.getpathcoords())
+
+  
 
   
 
