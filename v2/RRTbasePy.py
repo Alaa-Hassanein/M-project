@@ -206,7 +206,7 @@ class RRTGraph:
             theta=math.atan2(py,px)
             (x,y)=(int(xnear+dmax *math.cos(theta)),int(ynear+dmax * math.sin(theta)))
             self.remove_node(nrand)
-            if abs(x-self.goal[0])<dmax and abs (y-self.goal[1])<dmax:
+            if abs(x-self.goal[0])<20 and abs (y-self.goal[1])<20:
                 self.add_node(nrand,self.goal[0],self.goal[1])
                 self.goalstate=nrand
                 self.goalFLag=True
