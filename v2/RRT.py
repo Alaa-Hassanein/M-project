@@ -6,8 +6,8 @@ from RRTbasePy import RRTMap
 def main():
    
     dimenstion =(704,700)
-    start =(23,100)
-    goal=(679,602)
+    start =(39,207)
+    goal=(643,491)
     obsdim=0
     iteration=0
 

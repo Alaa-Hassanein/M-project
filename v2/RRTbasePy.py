@@ -21,7 +21,7 @@ class RRTMap:
         maze=pygame.image.load('maze.jpg')
         self.map.fill((255, 255, 255))
         self.map.blit(maze,(0,0))
-        self.nodeRad=2
+        self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
         
@@ -59,7 +59,7 @@ class RRTGraph:
     def __init__(self,start,goal,MapDimentions,obsdim):
         self.obsdim=obsdim
         self.maze=pygame.image.load('maze.jpg')
-        self.nodeRad=2
+        self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
         (x,y)=start
@@ -154,11 +154,11 @@ class RRTGraph:
     def isFree (self):
         n=self.number_of_nodes()-1
         (x,y)=(self.x[n],self.y[n])
-        half_width = 2 
-        half_height = 2 
+        half_width = 20 
+        half_height = 20 
         start_x = int(x - half_width)
         start_y = int(y - half_height)
-        square_region = self.gray[start_y:start_y+2, start_x:start_x+2]
+        square_region = self.gray[start_y:start_y+40, start_x:start_x+40]
 
         
         if any(pixel != 255 for pixel in square_region.flatten()) :
@@ -175,11 +175,11 @@ class RRTGraph:
             u=i/100
             x=x1*u+x2*(1-u)
             y=y1*u+y2*(1-u)
-            half_width = 2 
-            half_height = 2 
+            half_width = 20 
+            half_height = 20 
             start_x = int(x - half_width)
             start_y = int(y - half_height)
-            square_region = self.gray[start_y:start_y+2, start_x:start_x+2]
+            square_region = self.gray[start_y:start_y+40, start_x:start_x+40]
             if any(pixel != 255 for pixel in square_region.flatten()):
                 return True
         return False
@@ -196,7 +196,7 @@ class RRTGraph:
             return True
             
 
-    def step (self,nnear,nrand,dmax=35):
+    def step (self,nnear,nrand,dmax=100):
         d=self.distance(nnear,nrand)
         if d>dmax:
             u=dmax/d
@@ -206,7 +206,7 @@ class RRTGraph:
             theta=math.atan2(py,px)
             (x,y)=(int(xnear+dmax *math.cos(theta)),int(ynear+dmax * math.sin(theta)))
             self.remove_node(nrand)
-            if abs(x-self.goal[0])<dmax and abs (y-self.goal[1])<dmax:
+            if abs(x-self.goal[0])<20 and abs (y-self.goal[1])<20:
                 self.add_node(nrand,self.goal[0],self.goal[1])
                 self.goalstate=nrand
                 self.goalFLag=True
