@@ -17,7 +17,7 @@ def main():
     obstacles=graph.MakeObs()
     map.drawMap(obstacles)
 
-    while(iteration<1000):
+    while(not graph.path_to_goal()):
         if iteration % 10 == 0:
             x,y,parent=graph.bias(goal)
             pygame.draw.circle(map.map,map.grey,(x[-1],y[-1]),map.nodeRad+2,0)
@@ -29,7 +29,7 @@ def main():
         if iteration % 5==0:
             pygame.display.update()
         iteration +=1
-        #time.sleep(0.5)
+    map.drawPath(graph.getpathcoords())        
 
     pygame.display.update()
     pygame.event.clear()

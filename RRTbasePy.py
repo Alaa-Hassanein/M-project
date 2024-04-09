@@ -33,8 +33,12 @@ class RRTMap:
         self.drawObs(obstacles)
 
 
-    def  drawPath (self):
-        pass
+    def  drawPath (self, path):
+        for node in path:
+            pygame.draw.circle(self.map,self.red,node,self.nodeRad+3,0)
+        
+        
+
     def drawObs (self,obstacles):
         obstaclesList=obstacles.copy()
         while(len(obstaclesList)>0):
@@ -47,7 +51,7 @@ class RRTGraph:
         (x,y)=start
         self.start=start
         self.goal=goal
-        self.goalFLage=False
+        self.goalFLag=False
         self.Maph,self.mapw=MapDimentions
         self.x=[]
         self.y=[]
@@ -182,15 +186,30 @@ class RRTGraph:
             if abs(x-self.goal[0])<dmax and abs (y-self.goal[1])<dmax:
                 self.add_node(nrand,self.goal[0],self.goal[1])
                 self.goalstate=nrand
-                self.goalFLage=True
+                self.goalFLag=True
             else:
                 self.add_node(nrand,x,y)
 
 
-    def pass_to_goal(self):
-        pass
+    def path_to_goal(self):
+        if self.goalFLag:
+            self.path=[]
+            self.path.append(self.goalstate)
+            newpos=self.parent[self.goalstate]
+            while(newpos !=0):
+                self.path.append(newpos)
+                newpos=self.parent[newpos]
+            self.path.append(0)
+        return self.goalFLag
+
     def getpathcoords(self):
-        pass
+        pathCoords=[]
+        for node in self.path:
+            x,y=(self.x[node],self.y[node])
+            pathCoords.append((x,y))
+        return pathCoords
+
+
     def bias (self,ngoal):
         n=self.number_of_nodes()
         self.add_node(n,ngoal[0],ngoal[1])
