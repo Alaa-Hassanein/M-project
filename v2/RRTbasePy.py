@@ -196,7 +196,7 @@ class RRTGraph:
             return True
             
 
-    def step (self,nnear,nrand,dmax=35):
+    def step (self,nnear,nrand,dmax=100):
         d=self.distance(nnear,nrand)
         if d>dmax:
             u=dmax/d
