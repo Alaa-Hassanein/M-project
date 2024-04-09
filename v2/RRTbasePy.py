@@ -21,7 +21,7 @@ class RRTMap:
         maze=pygame.image.load('maze.jpg')
         self.map.fill((255, 255, 255))
         self.map.blit(maze,(0,0))
-        self.nodeRad=2
+        self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
         
@@ -59,7 +59,7 @@ class RRTGraph:
     def __init__(self,start,goal,MapDimentions,obsdim):
         self.obsdim=obsdim
         self.maze=pygame.image.load('maze.jpg')
-        self.nodeRad=2
+        self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
         (x,y)=start
