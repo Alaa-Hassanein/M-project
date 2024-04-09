@@ -1,30 +1,39 @@
 import random
 import math
 import pygame
+import cv2 
+import numpy as np
+
+
+
 class RRTMap:
-    def __init__(self,start,goal,MapDimentions,obsdim,obsnum):
+    def __init__(self,start,goal,MapDimentions,obsdim):
         self.start=start
         self.goal=goal
         self.MapDimentions=MapDimentions
         self.Maph,self.mapw=MapDimentions
+        self.obsdim=obsdim
 
         #windows settings
+       
         self.map=pygame.display.set_mode((self.mapw,self.Maph))
         pygame.display.set_caption('RRT path planing')
+        maze=pygame.image.load('maze.jpg')
         self.map.fill((255, 255, 255))
+        self.map.blit(maze,(0,0))
         self.nodeRad=2
         self.nodeThickness=0
         self.edgeThickness=1
-        self.obstacles=[]
-        self.obsnum=obsnum
-        self.obsdim=obsdim
+        
 
         #color
+        self.black=(0,0,0)
         self.grey=(70,70,70)
         self.blue=(0,0,255)
         self.green=(0,255,0)
         self.red=(255,0,0)
         self.white=(255,255,255)
+       
         
 
     def drawMap(self,obstacles):
@@ -34,7 +43,7 @@ class RRTMap:
 
 
     def  drawPath (self, path):
-        for node in path:
+       for node in path:
             pygame.draw.circle(self.map,self.red,node,self.nodeRad+3,0)
         
         
@@ -43,11 +52,16 @@ class RRTMap:
         obstaclesList=obstacles.copy()
         while(len(obstaclesList)>0):
             obstacles=obstaclesList.pop(0)
-            pygame.draw.rect(self.map,self.grey,obstacles)
+            pygame.draw.rect(self.map,self.black,obstacles)
 
 
 class RRTGraph:
-    def __init__(self,start,goal,MapDimentions,obsdim,obsnum):
+    def __init__(self,start,goal,MapDimentions,obsdim):
+        self.obsdim=obsdim
+        self.maze=pygame.image.load('maze.jpg')
+        self.nodeRad=2
+        self.nodeThickness=0
+        self.edgeThickness=1
         (x,y)=start
         self.start=start
         self.goal=goal
@@ -56,35 +70,32 @@ class RRTGraph:
         self.x=[]
         self.y=[]
         self.parent=[]
+        self.black=(0,0,0)
+        self.im = cv2.imread('maze.jpg')
+        self.gray = cv2.cvtColor(self.im, cv2.COLOR_BGR2GRAY)
+        self.Yb, self.Xb = np.where(np.all(self.im==self.black,axis=2))
 
         #init the tree
         self.x.append(x)
         self.y.append(y)
         self.parent.append(0)
 
-        #the obs
-        self.obstacles=[]
-        self.obsnum=obsnum
-        self.obsdim=obsdim
-
         #path
         self.goalstate=None
         self.path=[]
 
 
-    def makeRandomRect(self):
-        uppercornerx=int(random.randint(0,self.mapw-self.obsdim))
-        uppercornery=int(random.randint(0,self.mapw-self.obsdim))
-        return (uppercornerx,uppercornery)
+        
 
 
     def MakeObs(self):
+        
         obs=[]
-        for i in range(0,self.obsnum):
+        for i in range(0,len(self.Xb)):
             rectang=None
             startgoalcol = True
             while startgoalcol:
-                upper=(self.makeRandomRect())
+                upper=(self.Xb[i],self.Yb[i])
                 rectang=pygame.Rect(upper,(self.obsdim,self.obsdim))
                 if rectang.collidepoint(self.start) or rectang.collidepoint(self.goal):
                     startgoalcol=True
@@ -93,6 +104,7 @@ class RRTGraph:
             obs.append(rectang)
         self.obstacles=obs.copy()
         return obs
+         
 
     def add_node (self,n,x,y):
         self.x.insert(n,x)
@@ -108,7 +120,7 @@ class RRTGraph:
         self.parent.insert(child,parent)
 
     def remove_edge(self,parent,n):
-        self.parent.popn()
+        self.parent.popn(n)
 
 
     def number_of_nodes(self):
@@ -142,26 +154,37 @@ class RRTGraph:
     def isFree (self):
         n=self.number_of_nodes()-1
         (x,y)=(self.x[n],self.y[n])
-        obs=self.obstacles.copy()
-        while len(obs)>0:
-            rectang=obs.pop(0)
-            if rectang.collidepoint(x,y):
-                self.remove_node(n)
-                return False
+        half_width = 2 
+        half_height = 2 
+        start_x = int(x - half_width)
+        start_y = int(y - half_height)
+        square_region = self.gray[start_y:start_y+2, start_x:start_x+2]
+
+        
+        if any(pixel != 255 for pixel in square_region.flatten()) :
+            self.remove_node(n)
+            return False
         return True
+        
+        
 
 
     def crossObstacle (self,x1,x2,y1,y2):
-        obs=self.obstacles.copy()
-        while len(obs)>0:
-            rectang=obs.pop(0)
-            for i in range(0,101):
-                u=i/100
-                x=x1*u+x2*(1-u)
-                y=y1*u+y2*(1-u)
-                if rectang.collidepoint(x,y):
-                    return True
+           
+        for i in range(0,101):
+            u=i/100
+            x=x1*u+x2*(1-u)
+            y=y1*u+y2*(1-u)
+            half_width = 2 
+            half_height = 2 
+            start_x = int(x - half_width)
+            start_y = int(y - half_height)
+            square_region = self.gray[start_y:start_y+2, start_x:start_x+2]
+            if any(pixel != 255 for pixel in square_region.flatten()):
+                return True
         return False
+
+
     def connect (self,n1,n2):
         (x1,y1)=(self.x[n1],self.y[n1])
         (x2,y2)=(self.x[n2],self.y[n2])

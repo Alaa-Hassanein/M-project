@@ -4,20 +4,20 @@ from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
 
 def main():
-    dimenstion =(600,1000)
-    start =(50,50)
-    goal=(510,510)
-    obsdim=30
-    obsnum=50
+   
+    dimenstion =(620,900)
+    start =(12,31)
+    goal=(862,591)
+    obsdim=0
     iteration=0
-    pygame.init()
-    map=RRTMap(start,goal,dimenstion,obsdim,obsnum)
-    graph=RRTGraph(start,goal,dimenstion,obsdim,obsnum)
 
-    obstacles=graph.MakeObs()
-    print(type(obstacles))
+    pygame.init()
+    map=RRTMap(start,goal,dimenstion,obsdim)
+    graph=RRTGraph(start,goal,dimenstion,obsdim)
+
+    obstacles = graph.MakeObs()
     map.drawMap(obstacles)
-    
+
     while(not graph.path_to_goal()):
         if iteration % 10 == 0:
             x,y,parent=graph.bias(goal)
@@ -30,19 +30,14 @@ def main():
         if iteration % 5==0:
             pygame.display.update()
         iteration +=1
-    map.drawPath(graph.getpathcoords())        
+    map.drawPath(graph.getpathcoords())
+
+  
 
     pygame.display.update()
     pygame.event.clear()
     pygame.event.wait(0)
 
-    
-   
-    
-    
-    
 
 if __name__ == '__main__':
     main()
-
-

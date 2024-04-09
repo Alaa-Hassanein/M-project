@@ -19,7 +19,7 @@ def check_white_square(image_path, center_x, center_y):
         print("free")
 
 
-image_path = "C:/Users/Aditya/OneDrive - YA/Desktop/Semster 6/Mechatronics Project/Resources/maze.jpg"
+image_path = "maze.jpg"
 center_x = 20
 center_y = 20  
 check_white_square(image_path, center_x, center_y)
