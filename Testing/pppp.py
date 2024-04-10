@@ -60,25 +60,27 @@ def MoveForward(pos, maze):
 def Wall_Follower(F):
     global directions
     directions = {'forward': 'N', 'left': 'W', 'back': 'S', 'right': 'E'}
-    currPos = (1, 1)  # Start at (1, 1)  **assuming valid starting position**
+    currPos = (F.cols,F.rows)  # Start at (1, 1)  **assuming valid starting position**
     path = ''
     while True:
-        if currPos == (1, 1):
+        if currPos == (2, 2):
             break
 
         # Check if there's a wall on the left relative to current direction
-        if F.maze_map[currPos][directions['left']] == 0:
-            if F.maze_map[currPos][directions['forward']] == 0:
-                # Dead end detected! Try turning around (replace with your strategy)
-                RCW()
-                RCW()  # Turn around (alternative action)
-            else:
-                currPos, D = MoveForward(currPos, F)
-                path += D
-        else:
-            RCCW()
-            currPos, D = MoveForward(currPos, F)
-            path += D
+        if F.maze_map[currPos][directions['left']] == 0 and F.maze_map[currPos][directions['forward']] == 0 \
+            and F.maze_map[currPos][directions['right']] == 1 and F.maze_map[currPos][directions['left']] == 1:
+            # Dead end detected! Try turning around
+            RCW()
+            RCW()
+            if F.maze_map[currPos][directions['left']] == 0:  # This section is redundant
+                if F.maze_map[currPos][directions['forward']] == 0:
+                    # Dead end detected! (already checked earlier)
+                    RCW()
+                    RCW()
+                else:
+                    currPos, D = MoveForward(currPos, F)
+                    path += D
+
 
     return path
 
