@@ -5,20 +5,30 @@ def RCW():
     global directions
     k=list(directions.keys())
     v=list(directions.values())
-    v_rotated=[v[-1]]+v[:-1]
+    x=v[0]
+    for i in range(len(v)-1):
+        
+        v[i]=v[i+1]
+    v[len(v)-1]=x
 
-    zip(k,v_rotated)
-    directions=dict(zip(k,v_rotated))
+    zip(k,v)
+    directions=dict(zip(k,v))
 
 
 def RCCW():
     global directions
     k=list(directions.keys())
     v=list(directions.values())
-    v_rotated=v[:1]+[v[0]]
+    x=v[len(v)-1]
+    i=len(v)-1
+    print(x)
+    while (i>0):
+        v[i]=v[i-1]
+        i=i-1
+    v[0]=x
 
-    zip(k,v_rotated)
-    directions=dict(zip(k,v_rotated))
+    zip(k,v)
+    directions=dict(zip(k,v))
 
 
 def MoveForward(pos):
@@ -39,18 +49,18 @@ def Wall_Follower(F):
     currPos=(F.rows,F.cols)
     path=''
     while True:
-        if currPos ==(1,1):
+        if currPos == (1, 1):
             break
-        if F.maze_map[currPos][directions['left']]==0:
-            if F.maze_map[currPos][directions['forward']]==0:
+        if F.maze_map[currPos][directions['left']] == 0:
+            if F.maze_map[currPos][directions['forward']] == 0:
                 RCW()
             else:
-                currPos,D=MoveForward(currPos)
-                path+=D
+                currPos, D = MoveForward(currPos)
+                path += D
         else:
             RCCW()
-            currPos,D=MoveForward(currPos)
-            path+=D
+            currPos, D = MoveForward(currPos)
+            path += D
 
 
     
@@ -58,7 +68,11 @@ if __name__=='__main__':
     myMaze=maze(6,6)
     myMaze.CreateMaze()
     a=agent(myMaze,shape='arrow')
+
+    
     path=Wall_Follower(myMaze)
+
+
     myMaze.tracePath({a:path})
 
 
