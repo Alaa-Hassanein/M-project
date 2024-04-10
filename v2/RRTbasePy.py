@@ -21,7 +21,7 @@ class RRTMap:
         maze=pygame.image.load('maze.jpg')
         self.map.fill((255, 255, 255))
         self.map.blit(maze,(0,0))
-        self.nodeRad=30
+        self.nodeRad=2
         self.nodeThickness=0
         self.edgeThickness=1
         
@@ -196,7 +196,7 @@ class RRTGraph:
             return True
             
 
-    def step (self,nnear,nrand,dmax=100):
+    def step (self,nnear,nrand,dmax=35):
         d=self.distance(nnear,nrand)
         if d>dmax:
             u=dmax/d
@@ -206,7 +206,7 @@ class RRTGraph:
             theta=math.atan2(py,px)
             (x,y)=(int(xnear+dmax *math.cos(theta)),int(ynear+dmax * math.sin(theta)))
             self.remove_node(nrand)
-            if abs(x-self.goal[0])<20 and abs (y-self.goal[1])<20:
+            if abs(x-self.goal[0])<dmax and abs (y-self.goal[1])<dmax:
                 self.add_node(nrand,self.goal[0],self.goal[1])
                 self.goalstate=nrand
                 self.goalFLag=True
