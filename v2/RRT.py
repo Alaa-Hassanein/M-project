@@ -2,12 +2,32 @@ import pygame
 import time
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
+import re
+
+def read_file_line_by_line(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+            return lines
+    except FileNotFoundError:
+        return None
+
+
+
+lines = read_file_line_by_line("loc.txt")
+lrobot = (int(lines[0]),int(lines[1]))
+lgoal = (int(lines[2]),int(lines[3]))
+lheight = int(lines[4])
+lwidth = int(lines [5])
+
+print(lrobot)
+
 
 def main():
    
-    dimenstion =(1080,1920)
-    start =(1716, 140)
-    goal=(240, 812)
+    dimenstion =(lheight,lwidth)
+    start = lrobot
+    goal= lgoal
     obsdim=0
     iteration=0
 
