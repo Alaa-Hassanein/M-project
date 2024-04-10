@@ -2,9 +2,10 @@ import pygame
 import time
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
-from ..Testing import IPV2
 
-IPV2.main()
+with open("Testing/IPV2.py") as f:
+    exec(f.read())
+
 
 def read_file_line_by_line(file_path):
     try:
@@ -14,8 +15,6 @@ def read_file_line_by_line(file_path):
     except FileNotFoundError:
         return None
 
-
-
 lines = read_file_line_by_line("loc.txt")
 lrobot = (int(lines[0]),int(lines[1]))
 lgoal = (int(lines[2]),int(lines[3]))
@@ -23,7 +22,6 @@ lheight = int(lines[4])
 lwidth = int(lines [5])
 
 print(lrobot)
-
 
 def main():
    
@@ -53,14 +51,9 @@ def main():
         iteration +=1
     map.drawPath(graph.getpathcoords())
 
-  
-
-  
-
     pygame.display.update()
     pygame.event.clear()
-    pygame.event.wait(10)
-
+    pygame.event.wait(0)
 
 if __name__ == '__main__':
     main()
