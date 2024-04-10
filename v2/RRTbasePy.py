@@ -18,7 +18,7 @@ class RRTMap:
        
         self.map=pygame.display.set_mode((self.mapw,self.Maph))
         pygame.display.set_caption('RRT path planing')
-        maze=pygame.image.load('maze.jpg')
+        maze=pygame.image.load('binary.jpg')
         self.map.fill((255, 255, 255))
         self.map.blit(maze,(0,0))
         self.nodeRad=2
@@ -58,7 +58,7 @@ class RRTMap:
 class RRTGraph:
     def __init__(self,start,goal,MapDimentions,obsdim):
         self.obsdim=obsdim
-        self.maze=pygame.image.load('maze.jpg')
+        self.maze=pygame.image.load('binary.jpg')
         self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
@@ -71,7 +71,7 @@ class RRTGraph:
         self.y=[]
         self.parent=[]
         self.black=(0,0,0)
-        self.im = cv2.imread('maze.jpg')
+        self.im = cv2.imread('binary.jpg')
         self.gray = cv2.cvtColor(self.im, cv2.COLOR_BGR2GRAY)
         self.Yb, self.Xb = np.where(np.all(self.im==self.black,axis=2))
 

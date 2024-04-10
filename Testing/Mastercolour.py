@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from PIL import Image
+import os
 
 def capture_and_save_image(filename="all.jpg"):
   # Capture video from the default camera (index 0)
@@ -163,7 +164,26 @@ def find_object(image):
 
   return True, (x, y, w, h), center, radius
 
+def write_array_to_file(array, filename="loc.txt"):
+  """
+  Writes an array to a text file, handling existing file deletion or clearing.
 
+  Args:
+      array (list): The list or NumPy array to write to the file.
+      filename (str, optional): The filename to use. Defaults to "loc.txt".
+  """
+
+  # Ensure data is a list or NumPy array
+  if not isinstance(array, (list, np.ndarray)):
+      raise TypeError("Input data must be a list or NumPy array.")
+
+  # Open the file in write mode with truncation (deletes existing content)
+  with open(filename, "w") as f:
+    # Write each element of the array on a separate line
+    for item in array:
+      f.write(str(item) + "\n")  # Convert each item to string before writing
+
+  print(f"Array successfully written to {filename}.")
 
 
 picname = "all.jpg"
@@ -210,6 +230,8 @@ if goaly:
   print(f"Radius: {gradius}")
 
 lines = [
-    "Readme",
-    "How to write text files in Python"
+    rcenter,
+    gcenter
 ]
+
+write_array_to_file(lines)
