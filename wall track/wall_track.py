@@ -54,7 +54,7 @@ def wallFollower(m):
 
 
 if __name__=='__main__':
-    myMaze=maze(20,30)
+    myMaze=maze(6,6)
     myMaze.CreateMaze()
 
     a=agent(myMaze,shape='arrow',footprints=True)
