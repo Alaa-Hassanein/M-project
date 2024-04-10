@@ -175,11 +175,11 @@ class RRTGraph:
             u=i/100
             x=x1*u+x2*(1-u)
             y=y1*u+y2*(1-u)
-            half_width = 20 
-            half_height = 20 
+            half_width = 55 
+            half_height = 55 
             start_x = int(x - half_width)
             start_y = int(y - half_height)
-            square_region = self.gray[start_y:start_y+40, start_x:start_x+40]
+            square_region = self.gray[start_y:start_y+110, start_x:start_x+110]
             if any(pixel != 255 for pixel in square_region.flatten()):
                 return True
         return False
