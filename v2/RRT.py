@@ -2,7 +2,9 @@ import pygame
 import time
 from RRTbasePy import RRTGraph
 from RRTbasePy import RRTMap
-import re
+from ..Testing import IPV2
+
+IPV2.main()
 
 def read_file_line_by_line(file_path):
     try:
@@ -57,7 +59,7 @@ def main():
 
     pygame.display.update()
     pygame.event.clear()
-    pygame.event.wait(0)
+    pygame.event.wait(10)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,15 @@
+##################################
+#      Image processing V2       #
+##################################
+
+# Imports
+
 import cv2
 import numpy as np
 from PIL import Image
 import os
+
+# Functions
 
 def capture_and_save_image(filename="all.jpg"):
   cap = cv2.VideoCapture(0)
@@ -91,46 +99,61 @@ def write_array_to_file(array, filename="loc.txt"):
       f.write(str(item) + "\n")  # Convert each item to string before writing
   print(f"Array successfully written to {filename}.")
 
+# Main
 
 
+def main():
+  picname = "all.jpg"  #main picture name
+  #capture_and_save_image(picname) #input using camera
+  image = cv2.imread(picname) # read the image capture
+  height, width = image.shape[:2] # maze dimensions
 
-picname = "all.jpg"
-#capture_and_save_image(picname) 
-image = cv2.imread(picname)
-height, width = image.shape[:2]
+  # colour filter values
 
-hsv_filter_green = ((35, 50, 50), (75, 255, 255))  # Green
-hsv_filter_red_dark = ((0, 100, 100), (10, 255, 255)) # Red (for darker shades)
-hsv_filter_red_bright = ((170, 100, 100), (180, 255, 255)) # Red (for brighter shades)
-hsv_filter_blue = ((100, 100, 100), (140, 255, 255))  # Blue
+  hsv_filter_green = ((35, 50, 50), (75, 255, 255))  # Green
+  hsv_filter_red_dark = ((0, 100, 100), (10, 255, 255)) # Red (for darker shades)
+  hsv_filter_red_bright = ((170, 100, 100), (180, 255, 255)) # Red (for brighter shades)
+  hsv_filter_blue = ((100, 100, 100), (140, 255, 255))  # Blue
 
-save_processed_image(image.copy(), "goal.png", hsv_filter_green)
-save_processed_image(image.copy(), "robot.png", hsv_filter_blue)
-save_processed_image(image.copy(), "map.png", hsv_filter_red_dark)
+  # colour filterations
 
-binary_map = cv2.imwrite("binary.jpg",convert_to_maze_binary(cv2.imread("map.png")))
-binary_robot = cv2.imwrite("robotb.jpg",convert_to_binary(cv2.imread("robot.png")))
-binary_goal = cv2.imwrite("goalb.jpg",convert_to_binary(cv2.imread("goal.png")))
+  save_processed_image(image.copy(), "goal.png", hsv_filter_green)
+  save_processed_image(image.copy(), "robot.png", hsv_filter_blue)
+  save_processed_image(image.copy(), "map.png", hsv_filter_red_dark)
 
-# Convert the image to a NumPy array
-robotloc = np.array(Image.open("robotb.jpg"))
-goalloc = np.array(Image.open("goalb.jpg"))
+  #convert to binary
 
-roboty, rbounding_box, rcenter, rradius = find_object(robotloc)
-goaly, gbounding_box, gcenter, gradius = find_object(goalloc)
+  binary_map = cv2.imwrite("binary.jpg",convert_to_maze_binary(cv2.imread("map.png")))
+  binary_robot = cv2.imwrite("robotb.jpg",convert_to_binary(cv2.imread("robot.png")))
+  binary_goal = cv2.imwrite("goalb.jpg",convert_to_binary(cv2.imread("goal.png")))
 
-if roboty:
-  print("robot")
-  print(f"Bounding box: {rbounding_box}")
-  print(f"Center: {rcenter}")
-  print(f"Radius: {rradius}")
-if goaly:
-  print("goal")
-  print(f"Bounding box: {gbounding_box}")
-  print(f"Center: {gcenter}")
-  print(f"Radius: {gradius}")
+  # Convert the image to a NumPy array
 
-locs = [ rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
-write_array_to_file(locs)
-print(rcenter[0])
+  robotloc = np.array(Image.open("robotb.jpg"))
+  goalloc = np.array(Image.open("goalb.jpg"))
 
+  # Robot and Goal Location and Radius
+
+  roboty, rbounding_box, rcenter, rradius = find_object(robotloc)
+  goaly, gbounding_box, gcenter, gradius = find_object(goalloc)
+
+  # Debugging
+
+  if roboty:
+    print("robot")
+    print(f"Bounding box: {rbounding_box}")
+    print(f"Center: {rcenter}")
+    print(f"Radius: {rradius}")
+  if goaly:
+    print("goal")
+    print(f"Bounding box: {gbounding_box}")
+    print(f"Center: {gcenter}")
+    print(f"Radius: {gradius}")
+
+  # Writing the data needed 
+
+  locs = [ rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
+  write_array_to_file(locs)
+
+if __name__ == '__main__':
+    main()
