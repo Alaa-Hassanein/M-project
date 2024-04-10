@@ -1,79 +1,67 @@
-from pyamaze import maze,agent
-
+from pyamaze import maze,agent,COLOR
 
 def RCW():
-    global directions
-    k=list(directions.keys())
-    v=list(directions.values())
-    x=v[0]
-    for i in range(len(v)-1):
-        
-        v[i]=v[i+1]
-    v[len(v)-1]=x
-
-    zip(k,v)
-    directions=dict(zip(k,v))
-
+    global direction
+    k=list(direction.keys())
+    v=list(direction.values())
+    v_rotated=[v[-1]]+v[:-1]
+    direction=dict(zip(k,v_rotated))
 
 def RCCW():
-    global directions
-    k=list(directions.keys())
-    v=list(directions.values())
-    x=v[len(v)-1]
-    i=len(v)-1
-    print(x)
-    while (i>0):
-        v[i]=v[i-1]
-        i=i-1
-    v[0]=x
+    global direction
+    k=list(direction.keys())
+    v=list(direction.values())
+    v_rotated=v[1:]+[v[0]]
+    direction=dict(zip(k,v_rotated))
 
-    zip(k,v)
-    directions=dict(zip(k,v))
+def moveForward(cell):
+    if direction['forward']=='E':
+        return (cell[0],cell[1]+1),'E'
+    if direction['forward']=='W':
+        return (cell[0],cell[1]-1),'W'
+    if direction['forward']=='N':
+        return (cell[0]-1,cell[1]),'N'
+    if direction['forward']=='S':
+        return (cell[0]+1,cell[1]),'S'
 
-
-def MoveForward(pos):
-    if directions['forward'] == 'N':
-        return (pos[0] - 1, pos[1]),'N'
-    if directions['forward'] == 'E':
-        return (pos[0], pos[1] + 1),'E'
-    if directions['forward'] == 'S':
-        return (pos[0] + 1, pos[1]),'S'
-    if directions['forward'] == 'W':
-        return (pos[0], pos[1] - 1),'W'
-
-
-
-def Wall_Follower(F):
-    global directions
-    directions={'forward':'N','left':'W','back':'S','right':'E'}
-    currPos=(F.rows,F.cols)
+def wallFollower(m):
+    global direction
+    direction={'forward':'N','left':'W','back':'S','right':'E'}
+    currCell=(m.rows,m.cols)
     path=''
     while True:
-        if currPos == (1, 1):
+        
+        if currCell==(1,1):
             break
-        if F.maze_map[currPos][directions['left']] == 0:
-            if F.maze_map[currPos][directions['forward']] == 0:
+        if m.maze_map[currCell][direction['left']]==0:
+            if m.maze_map[currCell][direction['forward']]==0:
                 RCW()
             else:
-                currPos, D = MoveForward(currPos)
-                path += D
+                currCell,d=moveForward(currCell)
+                path+=d
         else:
             RCCW()
-            currPos, D = MoveForward(currPos)
-            path += D
+            currCell,d=moveForward(currCell)
+            path+=d
+    path2=path
+    while 'EW' in path2 or 'WE' in path2 or 'NS' in path2 or 'SN' in path2:
+        path2=path2.replace('EW','')
+        path2=path2.replace('WE','')
+        path2=path2.replace('NS','')
+        path2=path2.replace('SN','')
+    return path,path2
+        
 
 
-    
 if __name__=='__main__':
     myMaze=maze(6,6)
     myMaze.CreateMaze()
-    a=agent(myMaze,shape='arrow')
 
-    
-    path=Wall_Follower(myMaze)
-
-
+    a=agent(myMaze,shape='arrow',footprints=True)
+    b=agent(myMaze,shape='arrow',color=COLOR.yellow)
+    path,path2=wallFollower(myMaze)
     myMaze.tracePath({a:path})
+    myMaze.tracePath({b:path2})
 
-
+    print(path)
     myMaze.run()
