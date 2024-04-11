@@ -109,10 +109,6 @@ def resizing(main,hpercentage):
     cv2.imwrite("nature.jpg", final_im)
     return "yes"
 
-
-import cv2
-import numpy as np
-
 def convert_to_binary01(image_path):
   img = cv2.imread(image_path)
   gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
