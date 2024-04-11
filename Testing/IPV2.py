@@ -99,6 +99,32 @@ def write_array_to_file(array, filename="loc.txt"):
       f.write(str(item) + "\n")  # Convert each item to string before writing
   print(f"Array successfully written to {filename}.")
 
+
+def resizing(main,hpercentage):
+    main = cv2.imread(main)
+    height = main.shape[ 0] * hpercentage / 100
+    width = main.shape[ 1] * hpercentage / 100 
+    dim = dim = (int(width), int(height))
+    final_im = cv2.resize(main, dim, interpolation = cv2.INTER_AREA)
+    cv2.imwrite("nature.jpg", final_im)
+    return "yes"
+
+
+import cv2
+import numpy as np
+
+def convert_to_binary01(image_path):
+  img = cv2.imread(image_path)
+  gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  threshold = 220
+  binary_img = cv2.threshold(gray_img, threshold, 255, cv2.THRESH_BINARY_INV)[1]
+  # Convert the binary image to a NumPy array
+  binary_array = np.asmatrix(binary_img)
+  # Invert the array so white is 0 and others are 1
+  binary_array = np.where(binary_array == 255, 0, 1)
+  return binary_array
+
+
 # Main
 
 
@@ -154,6 +180,17 @@ def main():
 
   locs = [ rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
   write_array_to_file(locs)
+  gridimag = "binary.jpg"
+  hpercentage = int(((2*rradius/height))*100)
+  #wpercentage = int(((2*rradius/width))*100)
+  print(hpercentage,hpercentage)
+  print(resizing(gridimag,hpercentage))
+
+  # Example usage
+  image_path = "nature.jpg"
+  binary_array = convert_to_binary01(image_path)
+  print(binary_array)
+  write_array_to_file(binary_array,"map.txt")
 
 if __name__ == '__main__':
     main()

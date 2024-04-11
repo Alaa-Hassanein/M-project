@@ -54,11 +54,11 @@ def wallFollower(m):
 
 
 if __name__=='__main__':
-    myMaze=maze(6,6)
+    myMaze=maze(7,7)
     myMaze.CreateMaze()
 
-    a=agent(myMaze,shape='arrow',footprints=True)
-    b=agent(myMaze,shape='arrow',color=COLOR.yellow)
+    a=agent(myMaze,shape='square',footprints=True)
+    b=agent(myMaze,shape='arrow',color=COLOR.green,footprints=True)
     path,path2=wallFollower(myMaze)
     myMaze.tracePath({a:path})
     myMaze.tracePath({b:path2})
