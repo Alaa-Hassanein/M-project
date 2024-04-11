@@ -15,15 +15,13 @@ def read_file_line_by_line(file_path):
     except FileNotFoundError:
         return None
 
-lines = read_file_line_by_line("loc.txt")
-lrobot = (int(lines[0]),int(lines[1]))
-lgoal = (int(lines[2]),int(lines[3]))
-lheight = int(lines[4])
-lwidth = int(lines [5])
-
-print(lrobot)
-
 def main():
+
+    lines = read_file_line_by_line("loc.txt")
+    lrobot = (int(lines[0]),int(lines[1]))
+    lgoal = (int(lines[2]),int(lines[3]))
+    lheight = int(lines[4])
+    lwidth = int(lines [5])
    
     dimenstion =(lheight,lwidth)
     start = lrobot
