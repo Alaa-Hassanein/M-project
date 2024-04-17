@@ -18,7 +18,7 @@ class RRTMap:
        
         self.map=pygame.display.set_mode((self.mapw,self.Maph))
         pygame.display.set_caption('RRT path planing')
-        maze=pygame.image.load('maze.jpg')
+        maze=pygame.image.load('binary.jpg')
         self.map.fill((255, 255, 255))
         self.map.blit(maze,(0,0))
         self.nodeRad=2
@@ -58,7 +58,7 @@ class RRTMap:
 class RRTGraph:
     def __init__(self,start,goal,MapDimentions,obsdim):
         self.obsdim=obsdim
-        self.maze=pygame.image.load('maze.jpg')
+        self.maze=pygame.image.load('binary.jpg')
         self.nodeRad=30
         self.nodeThickness=0
         self.edgeThickness=1
@@ -71,7 +71,7 @@ class RRTGraph:
         self.y=[]
         self.parent=[]
         self.black=(0,0,0)
-        self.im = cv2.imread('maze.jpg')
+        self.im = cv2.imread('binary.jpg')
         self.gray = cv2.cvtColor(self.im, cv2.COLOR_BGR2GRAY)
         self.Yb, self.Xb = np.where(np.all(self.im==self.black,axis=2))
 
@@ -154,11 +154,19 @@ class RRTGraph:
     def isFree (self):
         n=self.number_of_nodes()-1
         (x,y)=(self.x[n],self.y[n])
+<<<<<<< HEAD:rrt v2/RRTbasePy.py
         half_width = 2 
         half_height = 2
         start_x = int(x - half_width)
         start_y = int(y - half_height)
         square_region = self.gray[start_y:start_y+4, start_x:start_x+4]
+=======
+        half_width = 5 
+        half_height = 5
+        start_x = int(x - half_width)
+        start_y = int(y - half_height)
+        square_region = self.gray[start_y:start_y+11, start_x:start_x+11]
+>>>>>>> 65b039b8acb8fea1655e982ffbaf1ff3dd03a2a7:v2/RRTbasePy.py
 
         
         if any(pixel != 255 for pixel in square_region.flatten()) :
@@ -175,11 +183,19 @@ class RRTGraph:
             u=i/100
             x=x1*u+x2*(1-u)
             y=y1*u+y2*(1-u)
+<<<<<<< HEAD:rrt v2/RRTbasePy.py
             half_width = 2
             half_height = 2 
             start_x = int(x - half_width)
             start_y = int(y - half_height)
             square_region = self.gray[start_y:start_y+4, start_x:start_x+4]
+=======
+            half_width = 5 
+            half_height = 5 
+            start_x = int(x - half_width)
+            start_y = int(y - half_height)
+            square_region = self.gray[start_y:start_y+11, start_x:start_x+11]
+>>>>>>> 65b039b8acb8fea1655e982ffbaf1ff3dd03a2a7:v2/RRTbasePy.py
             if any(pixel != 255 for pixel in square_region.flatten()):
                 return True
         return False
