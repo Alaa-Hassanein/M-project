@@ -154,11 +154,11 @@ class RRTGraph:
     def isFree (self):
         n=self.number_of_nodes()-1
         (x,y)=(self.x[n],self.y[n])
-        half_width = 55 
-        half_height = 55 
+        half_width = 2 
+        half_height = 2
         start_x = int(x - half_width)
         start_y = int(y - half_height)
-        square_region = self.gray[start_y:start_y+110, start_x:start_x+110]
+        square_region = self.gray[start_y:start_y+4, start_x:start_x+4]
 
         
         if any(pixel != 255 for pixel in square_region.flatten()) :
@@ -175,11 +175,11 @@ class RRTGraph:
             u=i/100
             x=x1*u+x2*(1-u)
             y=y1*u+y2*(1-u)
-            half_width = 55 
-            half_height = 55 
+            half_width = 2
+            half_height = 2 
             start_x = int(x - half_width)
             start_y = int(y - half_height)
-            square_region = self.gray[start_y:start_y+110, start_x:start_x+110]
+            square_region = self.gray[start_y:start_y+4, start_x:start_x+4]
             if any(pixel != 255 for pixel in square_region.flatten()):
                 return True
         return False
