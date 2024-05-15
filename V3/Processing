@@ -191,7 +191,8 @@ def main():
   #print(modified_array)
 
 
-  picname = "all.jpg"  #main picture name
+  #picname = "all.jpg"  #main picture name
+  picname = "all2.png"
   #capture_and_save_image(picname) #input using camera
   image = cv2.imread(picname) # read the image capture
   height, width = image.shape[:2] # maze dimensions
