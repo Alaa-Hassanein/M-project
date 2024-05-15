@@ -265,8 +265,8 @@ def main():
 
   # Example usage
   my_array = np.array([[0, 1, 2, 3], [1, 2, 3, 0], [2, 3, 0, 1], [3, 0, 1, 2]])
-  colored_image = create_colored_image(bw_array)
-  colored_image.show()  # Display the image
+  #colored_image = create_colored_image(bw_array)
+  #colored_image.show()  # Display the image
     #gridimag = "binary.jpg"
   #hpercentage = int(((2*rradius/height))*100)
   #wpercentage = int(((2*rradius/width))*100)
@@ -276,6 +276,7 @@ def main():
   # Example usage
   #image_path = "nature.jpg"
   #binary_array = convert_to_binary01(image_path)
+  return bw_array
   
 if __name__ == '__main__':
     main()
