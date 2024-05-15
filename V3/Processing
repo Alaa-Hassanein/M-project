@@ -137,7 +137,7 @@ def modify_array(array, center, height, width, value_to_replace_with):
     # Modify the specified area with the desired value
     for y in range(y_start, y_end):
         for x in range(x_start, x_end):
-            array[y][x] = value_to_replace_with
+            array[y][x] = int(value_to_replace_with)
 
     return array
 
@@ -276,7 +276,20 @@ def main():
   # Example usage
   #image_path = "nature.jpg"
   #binary_array = convert_to_binary01(image_path)
-  return bw_array
+
+
+  # Your 2D array (replace this with your actual data)
+
+  # Specify the output CSV file name
+  output_file = 'site.csv'
+
+  # Write the array to the CSV file
+  with open(output_file, 'w', newline='') as csvfile:
+      writer = csv.writer(csvfile)
+      writer.writerows(bw_array)
+
+  print(f"Array written to {output_file}")
+
   
 if __name__ == '__main__':
     main()

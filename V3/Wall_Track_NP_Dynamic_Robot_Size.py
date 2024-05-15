@@ -1,5 +1,5 @@
 from time import sleep
-import importlib.util
+
 
 
 
@@ -140,36 +140,19 @@ def wall_track(start, end, maze):
 
 
 
-def import_and_execute(file_path):
-    """
-    Imports a Python file and executes its main function.
-
-    Args:
-        file_path (str): Path to the Python file.
-
-    Returns:
-        Any: The return value from the main function.
-    """
-    spec = importlib.util.spec_from_file_location("module_name", file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-    if hasattr(module, "main"):
-        return module.main()
-    else:
-        raise AttributeError(f"'main' function not found in {file_path}")
-
-# Example usage
-
 
 
 
 
 
 def main():
-    file_path = 'Processing'  # Replace with the actual file path
-    result = import_and_execute(file_path)
-    print("Result:", result)
+    import numpy as np
+
+    # Read the CSV file into a numpy array
+    data_array = np.genfromtxt('site.csv', delimiter=',')
+    maze = data_array
+    # Display the result
+    #print(data_array)
 
     """maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 2, 2, 0, 0, 0, 0, 0, 0, 1],
