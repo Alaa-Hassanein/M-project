@@ -7,6 +7,7 @@
 import cv2
 import numpy as np
 from PIL import Image
+import csv
 import os
 
 # Functions
@@ -121,10 +122,55 @@ def convert_to_binary01(image_path):
   return binary_array
 
 
+def modify_array(array, center, height, width, value_to_replace_with):
+    y_center, x_center = center
+    half_height = height // 2
+    half_width = width // 2
+
+    # Calculate the boundaries of the modifying area
+    y_start = max(0, y_center - half_height)
+    y_end = min(len(array), y_center + half_height + 1)  # Adjusted to include the end index
+    x_start = max(0, x_center - half_width)
+    x_end = min(len(array[0]), x_center + half_width + 1)  # Adjusted to include the end index
+
+    # Modify the specified area with the desired value
+    for y in range(y_start, y_end):
+        for x in range(x_start, x_end):
+            array[y][x] = value_to_replace_with
+
+    return array
+
+
+import cv2
+import numpy as np
+
+def read_bw_image(image_path):
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read image as grayscale
+    bw_array = 1 - img / 255.0  # Invert values (white becomes 0, black becomes 1)
+    return bw_array
+
+
+
+
+
+
 # Main
 
 
 def main():
+
+  #const 
+  Robot_H = 0.281 #Meters 
+  Robot_W = 0.306 #Meters
+
+  # Example usage
+  #original_array = [[0] * 10 for _ in range(10)]
+  #center_coords = (1, 1)  # Center coordinates
+  #new_value = 255  # Value to replace with
+  #modified_array = modify_array(original_array, center_coords, height=3, width=3, value_to_replace_with=new_value)
+  #print(modified_array)
+
+
   picname = "all.jpg"  #main picture name
   #capture_and_save_image(picname) #input using camera
   image = cv2.imread(picname) # read the image capture
@@ -175,18 +221,36 @@ def main():
   # Writing the data needed 
 
   locs = [ rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
+  
+  
+  
+  
   write_array_to_file(locs)
-  gridimag = "binary.jpg"
-  hpercentage = int(((2*rradius/height))*100)
-  #wpercentage = int(((2*rradius/width))*100)
-  print(hpercentage,hpercentage)
-  print(resizing(gridimag,hpercentage))
 
   # Example usage
-  image_path = "nature.jpg"
-  binary_array = convert_to_binary01(image_path)
-  print(binary_array)
-  write_array_to_file(binary_array,"map.txt")
+  image_path = 'binary.jpg'  # Replace with the actual path to your image
+  bw_array = read_bw_image(image_path)
+  print(bw_array)
+  rheight = int((Robot_H/Robot_W)*rradius)
+  rwidth = rradius
+  gheight = int(1.1*rheight)
+  gwidth = int(1.1*rwidth)
 
+  bw_array= modify_array(bw_array,rcenter,rheight,rwidth,2)
+  bw_array= modify_array(bw_array,gcenter,gheight,gwidth,3)
+  with open("site.csv", "w", newline="") as file:
+      writer = csv.writer(file)
+      writer.writerows(bw_array)
+
+  #gridimag = "binary.jpg"
+  #hpercentage = int(((2*rradius/height))*100)
+  #wpercentage = int(((2*rradius/width))*100)
+  #print(hpercentage,hpercentage)
+  #print(resizing(gridimag,hpercentage))
+
+  # Example usage
+  #image_path = "nature.jpg"
+  #binary_array = convert_to_binary01(image_path)
+  
 if __name__ == '__main__':
     main()
