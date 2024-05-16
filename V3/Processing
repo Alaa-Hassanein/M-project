@@ -128,13 +128,13 @@ def modify_array(array, center, height, width, value_to_replace_with):
     half_height = height // 2
     half_width = width // 2
 
-    # Calculate the boundaries of the modifying area
+    
     y_start = max(0, y_center - half_height)
-    y_end = min(len(array), y_center + half_height + 1)  # Adjusted to include the end index
+    y_end = min(len(array), y_center + half_height + 1)  
     x_start = max(0, x_center - half_width)
-    x_end = min(len(array[0]), x_center + half_width + 1)  # Adjusted to include the end index
+    x_end = min(len(array[0]), x_center + half_width + 1)  
     print(x_start,x_end,y_start,y_end)
-    # Modify the specified area with the desired value
+  
     for y in range(y_start, y_end):
         for x in range(x_start, x_end):
             array[y][x] = int(value_to_replace_with)
@@ -155,8 +155,8 @@ def read_bw_image(image_path):
 
 def create_colored_image(array):
     color_map = {
-        1: (0, 0, 0),   # Black
-        0: (255, 0, 0), # Red
+        0: (0, 0, 0),   # Black
+        1: (255, 0, 0), # Red
         2: (0, 0, 255), # Blue
         3: (0, 255, 0)  # Green
     }
@@ -180,16 +180,8 @@ def create_colored_image(array):
 def main():
 
   #const 
-  Robot_H = 0.281 #Meters 
-  Robot_W = 0.306 #Meters
-
-  # Example usage
-  #original_array = [[0] * 10 for _ in range(10)]
-  #center_coords = (1, 1)  # Center coordinates
-  #new_value = 255  # Value to replace with
-  #modified_array = modify_array(original_array, center_coords, height=3, width=3, value_to_replace_with=new_value)
-  #print(modified_array)
-
+  Robot_H = 28.1 #CM 
+  Robot_W = 30.6 #CM
 
   #picname = "all.jpg"  #main picture name
   picname = "all2.png"
@@ -241,47 +233,28 @@ def main():
 
   # Writing the data needed 
 
-  locs = [ rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
-  
-  
-  
-  
-  write_array_to_file(locs)
-
-  # Example usage
-  image_path = 'binary.jpg'  # Replace with the actual path to your image
+  image_path = 'binary.jpg' 
   bw_array = read_bw_image(image_path)
   print(bw_array)
-  #gcenter = [gcenter[0],1080-gcenter[1]]
-  rheight = rradius
-  rwidth = rradius
-  gheight = int(1.5*rheight)
-  gwidth = int(1.5*rwidth)
+  
+  rheight = int(1.2 * rradius)
+  rwidth = rheight
+  gheight = int(1.2*rheight)
+  gwidth = gheight
 
+  rrelation = float(Robot_W / rheight)
+
+  locs = [ rrelation , rheight , rcenter[0],rcenter[1], gcenter[0],gcenter[1],height,width]
+  write_array_to_file(locs)
+  
   print(rheight,rwidth,rcenter,gheight,gwidth,gcenter)
 
   bw_array= modify_array(bw_array,rcenter,rheight,rwidth,value_to_replace_with=2)
   bw_array= modify_array(bw_array,gcenter,gheight,gwidth,value_to_replace_with=3)
   
-
-  # Example usage
-  my_array = np.array([[0, 1, 2, 3], [1, 2, 3, 0], [2, 3, 0, 1], [3, 0, 1, 2]])
   #colored_image = create_colored_image(bw_array)
   #colored_image.show()  # Display the image
-    #gridimag = "binary.jpg"
-  #hpercentage = int(((2*rradius/height))*100)
-  #wpercentage = int(((2*rradius/width))*100)
-  #print(hpercentage,hpercentage)
-  #print(resizing(gridimag,hpercentage))
 
-  # Example usage
-  #image_path = "nature.jpg"
-  #binary_array = convert_to_binary01(image_path)
-
-
-  # Your 2D array (replace this with your actual data)
-
-  # Specify the output CSV file name
   output_file = 'site.csv'
 
   # Write the array to the CSV file
@@ -290,7 +263,6 @@ def main():
       writer.writerows(bw_array)
 
   print(f"Array written to {output_file}")
-
   
 if __name__ == '__main__':
     main()
