@@ -5,7 +5,7 @@ import csv
 
 # Load an image (replace 'your_image.jpg' with the actual image file path)
 image_path = 'Map_Gen/RAW_MAP.png'
-#image_path = 'Data/MAPPPPPP.png'
+image_path = 'V4/Data/MAPPPPPP.png'
 image = cv2.imread(image_path)
 
 # Convert the image to grayscale
@@ -20,7 +20,7 @@ corners, ids, _ = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameter
 
 if ids is not None:
     # Create a CSV file to store marker information
-    with open('Map_Gen/aruco_markers.csv', 'w', newline='') as csvfile:
+    with open('V4/Map_Gen/aruco_markers.csv', 'w', newline='') as csvfile:
         fieldnames = ['ID', 'Center_X', 'Center_Y', 'Height', 'Width', 'Angle_Degrees']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()

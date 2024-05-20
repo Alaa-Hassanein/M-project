@@ -6,7 +6,7 @@ import csv
 import os
 
 # Read the CSV file into a pandas DataFrame
-df = pd.read_csv('Map_Gen/aruco_markers.csv')
+df = pd.read_csv('V4/Map_Gen/aruco_markers.csv')
 # Define the Marker class
 class Marker:
     def __init__(self, ID, center_x, center_y, height, width, angle_degrees):
@@ -137,15 +137,15 @@ hsv_filter_red_bright = ((170, 100, 100), (180, 255, 255)) # Red (for brighter s
 hsv_filter_blue = ((100, 100, 100), (140, 255, 255))  # Blue
 hsv_filter_brown = ((40, 0.2, 0.3), (50, 0.4, 1.0))
 
-picname = "Map_Gen/RAW_MAP.png"
-#picname = "Data/MAPPPPPP.png"
+picname = "V4/Map_Gen/RAW_MAP.png"
+picname = "V4/Data/MAPPPPPP.png"
 image = cv2.imread(picname) # read the image capture
 height, width = image.shape[:2] # maze dimensions
 
-save_processed_image(image.copy(), "Map_Gen/BIN_MAP.png", hsv_filter_red_dark)
-cv2.imwrite("Map_Gen/FIN_MAP.png",convert_to_maze_binary(cv2.imread("Map_Gen/BIN_MAP.png")))
+save_processed_image(image.copy(), "V4/Map_Gen/BIN_MAP.png", hsv_filter_red_dark)
+cv2.imwrite("V4/Map_Gen/FIN_MAP.png",convert_to_maze_binary(cv2.imread("V4/Map_Gen/BIN_MAP.png")))
 
-image_path = 'Map_Gen/FIN_MAP.png' 
+image_path = 'V4/Map_Gen/FIN_MAP.png' 
 bw_array = read_bw_image(image_path)
 Robot.x = int(Robot.x)
 Robot.y = int(Robot.y)
@@ -154,19 +154,19 @@ Goal.y = int(Goal.y)
 
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Goal.x,Goal.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
-output_file = 'Map_Gen/map_clean.csv'
+output_file = 'V4/Map_Gen/map_clean.csv'
 with open(output_file, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(bw_array)
 colored_image = create_colored_image(bw_array)
-colored_image.save('Map_Gen/MAP_CLEAN.png')
+colored_image.save('V4/Map_Gen/MAP_CLEAN.png')
 print(f"Array written to {output_file}")
 
 bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
 bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL,MAX_PIXEL,3)
 colored_image = create_colored_image(bw_array)
-colored_image.save('Map_Gen/MAP_REP.png')
-output_file = 'Map_Gen/map.csv'
+colored_image.save('V4/Map_Gen/MAP_REP.png')
+output_file = 'V4/Map_Gen/map.csv'
 with open(output_file, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(bw_array)
@@ -176,9 +176,9 @@ print(f"Array written to {output_file}")
 IRL = MAX_PIXEL/30.6
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
-write_array_to_file([Robot.x,Robot.y,direction,IRL],'Map_Gen/map.txt')
-write_array_to_file(robotloc,'Map_Gen/robot.txt')
-write_array_to_file(goalloc,'Map_Gen/goal.txt')
+write_array_to_file([Robot.x,Robot.y,direction,IRL],'V4/Map_Gen/map.txt')
+write_array_to_file(robotloc,'V4/Map_Gen/robot.txt')
+write_array_to_file(goalloc,'V4/Map_Gen/goal.txt')
 print(MAX_PIXEL,direction)
 
 
