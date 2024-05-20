@@ -176,7 +176,7 @@ print(f"Array written to {output_file}")
 IRL = MAX_PIXEL/30.6
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
-write_array_to_file([Robot.x,Robot.y,direction,IRL],'V4/Map_Gen/map.txt')
+write_array_to_file([direction,IRL],'V4/Map_Gen/map.txt')
 write_array_to_file(robotloc,'V4/Map_Gen/robot.txt')
 write_array_to_file(goalloc,'V4/Map_Gen/goal.txt')
 print(MAX_PIXEL,direction)
