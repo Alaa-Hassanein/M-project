@@ -1,10 +1,5 @@
 from time import sleep
-
-
-
-
-
-
+import numpy as np
 
 def RCW(direction, left_robot_back, left_robot_front, right_robot_back, right_robot_front):
     k=list(direction.keys())
@@ -146,33 +141,11 @@ def wall_track(start, end, maze):
 
 
 def main():
-    import numpy as np
-
     # Read the CSV file into a numpy array
     data_array = np.genfromtxt('site.csv', delimiter=',')
     maze = data_array
-    # Display the result
-    #print(data_array)
-
-    """sex = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-            [1, 2, 2, 0, 0, 0, 0, 1, 1, 1],
-            [1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
-            [1, 0, 1, 1, 0, 0, 1, 0, 0, 3],
-            [1, 0, 0, 1, 0, 0, 1, 1, 0, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]"""
-
-    start = [0, 0]
-    end = [4, 9]
-    #wall_track(start, end, maze)
+    wall_track(maze)
     robot_size(maze)
-
-
-
-
 
 if __name__ == '__main__':
     main()

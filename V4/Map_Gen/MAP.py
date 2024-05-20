@@ -38,7 +38,7 @@ def process_image(image, hsv_filter, edge_detection):
       image = edges  # Replace original image with edge detection result
 
   return image
-def save_processed_image(image, filename, hsv_filter, edge_detection=True):
+def save_processed_image(image, filename, hsv_filter, edge_detection=False):
   processed_image = process_image(image.copy(), hsv_filter, edge_detection)  # Process a copy
   cv2.imwrite(filename, processed_image)  # Save the processed image
   print(f"Image processed and saved as: {filename}")
@@ -86,7 +86,7 @@ def modify_array(array, center, height, width, value_to_replace_with):
         for x in range(x_start, x_end):
             array[y][x] = int(value_to_replace_with)
 
-    return array
+    return array,x_start,x_end,y_start,y_end
 def create_colored_image(array):
     color_map = {
         0: (0, 0, 0),   # Black
@@ -112,6 +112,7 @@ Robot = next((m for m in markers if m.ID == 4), None)
 Goal = next((m for m in markers if m.ID == 36), None)
 #constants
 MAX_PIXEL = max(Robot.height, Robot.width, Goal.height, Goal.width)
+MAX_PIXEL= MAX_PIXEL/27.04156*30.6
 if (MAX_PIXEL-int(MAX_PIXEL))>0:
     MAX_PIXEL = int(MAX_PIXEL)+1
 else:
@@ -128,12 +129,16 @@ elif Robot.angle>170 or Robot.angle<-170:
 else:
     direction = 'NaN'
 
+
+
 hsv_filter_green = ((35, 50, 50), (75, 255, 255))  # Green
 hsv_filter_red_dark = ((0, 100, 100), (10, 255, 255)) # Red (for darker shades)
 hsv_filter_red_bright = ((170, 100, 100), (180, 255, 255)) # Red (for brighter shades)
 hsv_filter_blue = ((100, 100, 100), (140, 255, 255))  # Blue
+hsv_filter_brown = ((40, 0.2, 0.3), (50, 0.4, 1.0))
 
 picname = "Map_Gen/RAW_MAP.png"
+#picname = "Data/MAPPPPPP.png"
 image = cv2.imread(picname) # read the image capture
 height, width = image.shape[:2] # maze dimensions
 
@@ -146,25 +151,34 @@ Robot.x = int(Robot.x)
 Robot.y = int(Robot.y)
 Goal.x = int(Goal.x)
 Goal.y = int(Goal.y)
-bw_array= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
-bw_array= modify_array(bw_array,(Goal.x,Goal.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
-bw_array= modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
-bw_array= modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL,MAX_PIXEL,3)
 
-colored_image = create_colored_image(bw_array)
-#colored_image.show()  # Display the image
-colored_image.save('Map_Gen/MAP_REP.png')
-
-output_file = 'Map_Gen/map.csv'
-# Write the array to the CSV file
+bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
+bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Goal.x,Goal.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
+output_file = 'Map_Gen/map_clean.csv'
 with open(output_file, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(bw_array)
-
+colored_image = create_colored_image(bw_array)
+colored_image.save('Map_Gen/MAP_CLEAN.png')
 print(f"Array written to {output_file}")
 
-IRL = 10 / MAX_PIXEL #cm
-write_array_to_file([direction,IRL],'Map_Gen/map.txt')
+bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
+bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL,MAX_PIXEL,3)
+colored_image = create_colored_image(bw_array)
+colored_image.save('Map_Gen/MAP_REP.png')
+output_file = 'Map_Gen/map.csv'
+with open(output_file, 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows(bw_array)
+print(f"Array written to {output_file}")
+
+
+IRL = MAX_PIXEL/30.6
+robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
+goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
+write_array_to_file([Robot.x,Robot.y,direction,IRL],'Map_Gen/map.txt')
+write_array_to_file(robotloc,'Map_Gen/robot.txt')
+write_array_to_file(goalloc,'Map_Gen/goal.txt')
 print(MAX_PIXEL,direction)
 
 

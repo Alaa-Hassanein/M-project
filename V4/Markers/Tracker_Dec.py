@@ -5,6 +5,7 @@ import csv
 
 # Load an image (replace 'your_image.jpg' with the actual image file path)
 image_path = 'Map_Gen/RAW_MAP.png'
+#image_path = 'Data/MAPPPPPP.png'
 image = cv2.imread(image_path)
 
 # Convert the image to grayscale
