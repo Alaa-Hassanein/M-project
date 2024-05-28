@@ -1,4 +1,3 @@
-from pyamaze import maze,agent,COLOR
 from math import sqrt, pow
 import time
 def r_size (FR,BR):
@@ -23,17 +22,6 @@ def r_or(LF,RF,RB,LB):
         else:
             return "S"
 
-
-def print_map(m,LF,RF,RB,LB):
-    xRF,yRF=RF
-    xLF,yLF=LF
-    xRB,yRB=RB
-    xLB,yLB=LB
-    m[xRF][yRF]=2
-    m[xLF][yLF]=2
-    m[xRB][yRB]=2
-    m[xLB][yLB]=2
-    print(m)
 
 def RCW(LF,RF,RB,LB):
     global direction
