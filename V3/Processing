@@ -101,7 +101,6 @@ def write_array_to_file(array, filename="loc.txt"):
       f.write(str(item) + "\n")  # Convert each item to string before writing
   print(f"Array successfully written to {filename}.")
 
-
 def resizing(main,hpercentage):
     main = cv2.imread(main)
     height = main.shape[ 0] * hpercentage / 100
@@ -122,7 +121,6 @@ def convert_to_binary01(image_path):
   binary_array = np.where(binary_array == 255, 0, 1)
   return binary_array
 
-
 def modify_array(array, center, height, width, value_to_replace_with):
     x_center, y_center = center
     half_height = height // 2
@@ -140,7 +138,6 @@ def modify_array(array, center, height, width, value_to_replace_with):
             array[y][x] = int(value_to_replace_with)
 
     return array
-
 
 def read_bw_image(image_path):
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read image as grayscale
@@ -169,13 +166,7 @@ def create_colored_image(array):
 
     return Image.fromarray(image_data)
 
-
-
-
-
-
 # Main
-
 
 def main():
 

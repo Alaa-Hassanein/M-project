@@ -12,7 +12,7 @@ def simple(input_list,static):
 
     return result
 
-static = 0.7116279069767443
+static = 0.007116279069767443
 input_sequence = ['w', 'W','w','d','d','s', 'a', 'a', 'd', 's', 's', 'w']
 output_list = simple(input_sequence,static)
 print(output_list)  

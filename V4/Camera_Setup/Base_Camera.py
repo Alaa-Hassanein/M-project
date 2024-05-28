@@ -9,7 +9,7 @@ param_markers = aruco.DetectorParameters()
 
 
 # Load the calibration data from multimatrix.npz
-calibration_data = np.load('Camera_Setup/MultiMatrix.npz')
+calibration_data = np.load('V4/Camera_Setup/MultiMatrix.npz')
 camera_matrix = calibration_data['camMatrix']
 distortion_coeffs = calibration_data['distCoef']
 r_vectors = calibration_data["rVector"]
@@ -23,7 +23,7 @@ ret, frame = cap.read()
 undistorted_frame = cv.undistort(frame, camera_matrix, distortion_coeffs)
 if ret:
     # Save the captured frame as "RAW_MAP.png"
-    cv.imwrite('Map_Gen/RAW_MAP.png', undistorted_frame)
+    cv.imwrite('V4/Map_Gen/RAW_MAP.png', undistorted_frame)
     print("Image saved as RAW_MAP.png")
 else:
     print("Error capturing image")
