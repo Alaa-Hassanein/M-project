@@ -1,5 +1,7 @@
 from pyamaze import maze,agent,COLOR
 
+    
+
 def RCW():
     global direction
     k=list(direction.keys())
@@ -31,7 +33,7 @@ def wallFollower(m):
     path=''
     while True:
         
-        if currCell==(1,1):
+        if currCell==( 1,1):
             break
         if m.maze_map[currCell][direction['left']]==0:
             if m.maze_map[currCell][direction['forward']]==0:
