@@ -112,7 +112,7 @@ Robot = next((m for m in markers if m.ID == 4), None)
 Goal = next((m for m in markers if m.ID == 36), None)
 #constants
 MAX_PIXEL = max(Robot.height, Robot.width, Goal.height, Goal.width)
-MAX_PIXEL= MAX_PIXEL/27.04156*30.6
+MAX_PIXEL= MAX_PIXEL/0.194*0.306
 if (MAX_PIXEL-int(MAX_PIXEL))>0:
     MAX_PIXEL = int(MAX_PIXEL)+1
 else:
@@ -174,7 +174,7 @@ with open(output_file, 'w', newline='') as csvfile:
 print(f"Array written to {output_file}")
 
 
-IRL = 30.6/MAX_PIXEL
+IRL = 0.306/MAX_PIXEL
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
 write_array_to_file([direction,IRL],'V4/Map_Gen/map.txt')

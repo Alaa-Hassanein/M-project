@@ -27,8 +27,7 @@ def detect_checker_board(image, grayImage, criteria, boardDimension):
 
     return image, ret
 
-
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture('http://192.168.1.12:8080/video')
 
 while True:
     _, frame = cap.read()
