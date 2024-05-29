@@ -163,7 +163,8 @@ colored_image.save('V4/Map_Gen/MAP_CLEAN.png')
 print(f"Array written to {output_file}")
 
 bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
-bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL,MAX_PIXEL,3)
+bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
+bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL+10,MAX_PIXEL+10,3)
 colored_image = create_colored_image(bw_array)
 colored_image.save('V4/Map_Gen/MAP_REP.png')
 output_file = 'V4/Map_Gen/map.csv'
@@ -173,7 +174,7 @@ with open(output_file, 'w', newline='') as csvfile:
 print(f"Array written to {output_file}")
 
 
-IRL = MAX_PIXEL/30.6
+IRL = 30.6/MAX_PIXEL
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
 write_array_to_file([direction,IRL],'V4/Map_Gen/map.txt')
