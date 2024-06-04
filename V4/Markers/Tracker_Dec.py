@@ -4,8 +4,8 @@ import math
 import csv
 
 # Load an image (replace 'your_image.jpg' with the actual image file path)
-image_path = 'Map_Gen/RAW_MAP.png'
-image_path = 'V4/Data/MAPPPPPP.png'
+image_path = 'v4/Map_Gen/RAW_MAP.png'
+#image_path = 'V4/Data/MAPPPPPP.png'
 image = cv2.imread(image_path)
 
 # Convert the image to grayscale
@@ -27,6 +27,7 @@ if ids is not None:
 
         # Process each detected marker
         for i in range(len(ids)):
+            
             # Calculate dimensions (width and height)
             width = np.linalg.norm(corners[i][0][0] - corners[i][0][1])
             height = np.linalg.norm(corners[i][0][1] - corners[i][0][2])

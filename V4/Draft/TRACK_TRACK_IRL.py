@@ -14,18 +14,18 @@ distortion_coeffs = calibration_data['distCoef']
 #t_vectors = calibration_data["tVector"]
 
 # Initialize the camera (e.g., webcam)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('http://192.168.1.12:8080/video')#cv2.VideoCapture(0)
 
 while True:
     # Capture a frame from the camera
     ret, frame = cap.read()
     # Undistort the frame
-    undistorted_frame = cv2.undistort(frame, camera_matrix, distortion_coeffs)
+    frame = cv2.undistort(frame, camera_matrix, distortion_coeffs)
     if not ret:
         continue  # Skip this frame if capture fails
 
     # Convert the frame to grayscale
-    gray = cv2.cvtColor(undistorted_frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Detect markers
     corners, ids, _ = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameters)

@@ -16,7 +16,7 @@ r_vectors = calibration_data["rVector"]
 t_vectors = calibration_data["tVector"]
 
 # Initialize the camera (e.g., webcam)
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture('http://192.168.1.12:8080/video')#cv.VideoCapture(0)
 
 ret, frame = cap.read()
 # Undistort the frame
