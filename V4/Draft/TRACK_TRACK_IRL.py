@@ -20,7 +20,7 @@ while True:
     # Capture a frame from the camera
     ret, frame = cap.read()
     # Undistort the frame
-    frame = cv2.undistort(frame, camera_matrix, distortion_coeffs)
+    #frame = cv2.undistort(frame, camera_matrix, distortion_coeffs)
     if not ret:
         continue  # Skip this frame if capture fails
 
@@ -63,7 +63,10 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
     # Show the result
-    cv2.imshow('ArUco Markers', frame)
+    #cv2.imshow('ArUco Markers', frame,)
+    #cv2.namedWindow('custom window',cv2.WINDOW_KEEPRATIO)
+    cv2.namedWindow('custom window', cv2.WINDOW_KEEPRATIO)
+    cv2.imshow('custom window', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

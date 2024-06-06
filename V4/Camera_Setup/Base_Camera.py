@@ -20,7 +20,7 @@ cap = cv.VideoCapture('http://192.168.1.12:8080/video')#cv.VideoCapture(0)
 
 ret, frame = cap.read()
 # Undistort the frame
-undistorted_frame = cv.undistort(frame, camera_matrix, distortion_coeffs)
+undistorted_frame = frame # cv.undistort(frame, camera_matrix, distortion_coeffs)
 if ret:
     # Save the captured frame as "RAW_MAP.png"
     cv.imwrite('V4/Map_Gen/RAW_MAP.png', undistorted_frame)

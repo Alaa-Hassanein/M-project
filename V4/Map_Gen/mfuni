@@ -1,0 +1,30 @@
+import numpy as np
+import cv2
+
+# Load your image (replace 'image_path' with the actual path)
+img = cv2.imread('C:/Users/Aditya/Downloads/Screenshot 2024-06-04 123654.png')
+
+# Convert to LAB color space
+img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+a_component = lab[:, :, 1]
+
+# Threshold the A-channel
+th = cv2.threshold(a_component, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+# Find contours
+contours, _ = cv2.findContours(th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+largest_contour = max(contours, key=cv2.contourArea)
+
+# Create a black mask
+mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
+mask = cv2.drawContours(mask, [largest_contour], 0, 255, -1)
+
+# Crop the image
+x, y, w, h = cv2.boundingRect(largest_contour)
+cropped_image = img[y:y + h, x:x + w]
+
+# Display the cropped image
+cv2.imshow('Cropped Image', cropped_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

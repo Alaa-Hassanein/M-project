@@ -16,15 +16,15 @@ r_vectors = calibration_data["rVector"]
 t_vectors = calibration_data["tVector"]
 
 # Initialize the camera (e.g., webcam)
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture("http://192.168.1.12:8080/video")
 
 ret, frame = cap.read()
 # Undistort the frame
-undistorted_frame = cv.undistort(frame, camera_matrix, distortion_coeffs)
+undistorted_frame = frame #cv.undistort(frame, camera_matrix, distortion_coeffs)
 if ret:
     # Save the captured frame as "RAW_MAP.png"
-    cv.imwrite('Map_Gen/RAW_MAP.png', undistorted_frame)
-    mframe = undistorted_frame
+    cv.imwrite('Map_Gen/RAW_MAP.png', frame)
+    mframe = undistorted_frame #frame#undistorted_frame
     gray_frame = cv.cvtColor(mframe, cv.COLOR_BGR2GRAY)
     marker_corners, marker_IDs, reject = aruco.detectMarkers(
         gray_frame, marker_dict, parameters=param_markers
@@ -50,7 +50,7 @@ if ret:
                 2,
                 cv.LINE_AA,
             )
-    cv.imwrite('Map_Gen/TRACK_MAP.png', mframe)
+    cv.imwrite('V4/Map_Gen/TRACK_MAP.png', mframe)
     print("Image saved as RAW_MAP.png")
 else:
     print("Error capturing image")
