@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Load an image containing ArUco markers (replace with your own image)
-image_path = 'Map_Gen/RAW_MAP.png'
+image_path = 'V4/Map_Gen/RAWMAP.png'
 image = cv2.imread(image_path)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -41,6 +41,8 @@ for i in range(len(ids)):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
 # Show the result
-cv2.imshow('ArUco Markers', image)
+cv2.namedWindow('custom window', cv2.WINDOW_KEEPRATIO)
+cv2.imshow('custom window', image)
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
