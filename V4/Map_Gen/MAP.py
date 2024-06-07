@@ -240,7 +240,7 @@ for _, row in df.iterrows():
                           row['Bottom_Right_X'],row['Bottom_Right_Y']))
 Robot = next((m for m in markers if m.ID == 4), None)
 Goal = next((m for m in markers if m.ID == 36), None)
-MAX_PIXEL= image.shape[1]/1.83*0.306
+MAX_PIXEL= image.shape[1]/1.83*0.3
 if (MAX_PIXEL-int(MAX_PIXEL))>0:
     MAX_PIXEL = int(MAX_PIXEL)+1
 else:
@@ -302,6 +302,8 @@ print(f"Array written to {output_file}")
 bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL*1.5),int(MAX_PIXEL*1.5),0)
 bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL+10,MAX_PIXEL+10,3)
+#bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
+
 colored_image = create_colored_image(bw_array)
 colored_image.save('V4/Map_Gen/MAP_REP.png')
 output_file = 'V4/Map_Gen/map.csv'
@@ -311,7 +313,7 @@ with open(output_file, 'w', newline='') as csvfile:
 print(f"Array written to {output_file}")
 
 
-IRL = 0.306/MAX_PIXEL
+IRL = 183/image.shape[1]
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
 write_array_to_file([direction,IRL],'V4/Map_Gen/map.txt')
