@@ -2,6 +2,15 @@ from math import sqrt, pow
 import numpy as np
 import time
 
+def get_max(arr):
+    if len(arr) == 0:
+        return None  # Return None if the list is empty
+    max_value = arr[0]
+    for num in arr:
+        if num > max_value:
+            max_value = num
+    return max_value
+
 def r_size (FR,BR):
     XFR, YFR = FR
     XBR, YBR = BR
@@ -66,25 +75,26 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
     left=1
     goal=0
     R=0
-    dis=gg(LF,RF,RB,LB,maze)
     xLF, yLF = LF
     xRF, yRF = RF
     xRB, yRB = RB
     xLB, yLB = LB
+    K=gg(LF,RF,RB,LB,maze,D)
+    print (K)
     if (D=="W"):
         minx=min(xLF,xLB)
         maxx=max(xLF,xLB)
         maxy=max(yLF,yRF)
         miny=min(yLF,yRF)
         for x in range(minx,maxx+1):
-            if maze[x][yLF-85]==1:
+            if maze[x][yLF-K]==1:
                 left=1
                 break
             else:
                 left=0
         if left==0:
             for x in range(minx,maxx+1):
-                if maze[x][yLF-85]==3:
+                if maze[x][yLF-K]==3:
                     R=1
                     goal=1
                 else:
@@ -94,16 +104,16 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
 
 
         for y in range (miny,maxy+1):
-            if maze[xLF-85][y]==1:
+            if maze[xLF-K][y]==1:
                 front=1
                 break
             else:
                 front=0
         if front==0:
             for y in range (miny,maxy+1):
-                if maze[xLF-85][y]==3:
+                if maze[xLF-K][y]==3:
                     goal=1
-                elif maze[xLF-85][y]==0:
+                elif maze[xLF-K][y]==0:
                     front=0
                     break        
             
@@ -115,14 +125,14 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
         maxy=max(yLF,yRF)
         miny=min(yLF,yRF)
         for x in range(minx,maxx+1):
-            if maze[x][yLF+85]==1:
+            if maze[x][yLF+K]==1:
                 left=1
                 break
             else:
                 left=0
         if left==0:
             for x in range(minx,maxx+1):
-                if maze[x][yLF+85]==3:
+                if maze[x][yLF+K]==3:
                     R=1
                     goal=1 
                 else:
@@ -132,16 +142,16 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
 
         
         for y in range (miny,maxy+1):
-            if maze[xLF+85][y]==1:
+            if maze[xLF+K][y]==1:
                 front=1
                 break
             else:
                 front=0
         if front==0:
             for y in range (miny,maxy+1):
-                if maze[xLF+85][y]==3:
+                if maze[xLF+K][y]==3:
                     goal=1
-                elif maze[xLF+85][y]==0:
+                elif maze[xLF+K][y]==0:
                     front=0
                     break
 
@@ -152,14 +162,14 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
         maxy=max(yLF,yLB)
         miny=min(yLF,yLB)
         for y in range (miny,maxy+1):
-            if maze[xLF-85][y]==1:
+            if maze[xLF-K][y]==1:
                 left=1
                 break
             else:
                 left=0
         if left ==0:
             for y in range (miny,maxy+1):
-                if maze[xLF-85][y]==3:
+                if maze[xLF-K][y]==3:
                     goal=1
                     R=1
                 else:
@@ -167,17 +177,17 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
                     R=0
                     break
         for x in range (minx,maxx+1):
-            if maze[x][yLF+85]==1:
+            if maze[x][yLF+K]==1:
                 front=1
                 break
             else:
                 front=0
         if front==0:
             for x in range (minx,maxx+1):
-                if maze[x][yLF+85]==3:
+                if maze[x][yLF+K]==3:
                     goal=1
                     
-                elif maze[x][yLF+85]==0:
+                elif maze[x][yLF+K]==0:
                     
                     break
     elif D=="A":
@@ -186,14 +196,14 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
         maxy=max(yLF,yLB)
         miny=min(yLF,yLB)
         for y in range (miny,maxy+1):
-            if maze[xLF+85][y]==1:
+            if maze[xLF+K][y]==1:
                 left=1
                 break
             else:
                 left=0
         if left ==0:
             for y in range (miny,maxy+1):
-                if maze[xLF+85][y]==3:
+                if maze[xLF+K][y]==3:
                     goal=1
                     R=1
                 else:
@@ -201,17 +211,17 @@ def wall_Detection(LF,RF,RB,LB,maze,D):
                     R=0
                     break
         for x in range (minx,maxx+1):
-            if maze[x][yLF-85]==1:
+            if maze[x][yLF-K]==1:
                 front=1
                 break
             else:
                 front=0
         if front==0:
             for x in range (minx,maxx+1):
-                if maze[x][yLF-85]==3:
+                if maze[x][yLF-K]==3:
                     goal=1
                     
-                elif maze[x][yLF-85]==0:
+                elif maze[x][yLF-K]==0:
                     
                     break
     return (left,front,goal,R)                
@@ -222,40 +232,72 @@ def gg(LF,RF,RB,LB,maze,D):
     xLF,yLF=LF
     xRB,yRB=RB
     xLB,yLB=LB
-    x=0
-    b=yLF
+    C=0
     a=xLF
-    
-    while True:
-        if(D=="W" ):
-            if maze[xLF][b]==1:
-
-                break
-            else:
-                b=b-1
-                x=x+1
-        elif(D=="A"):
-            if maze[xLF][b]==1:
-
-                break
-            else:
-                b=b+1
-                x=x+1
-        elif(D=="S"):
-            if maze[xLF][b]==1:
-
-                break
-            else:
-                b=b+1
-                x=x+1
-        elif(D=="D"):
-            if maze[xLF][b]==1:
-
-                break
-            else:
-                b=b+1
-                x=x+1
-    return x
+    h=0
+    if D=="W":
+        lo=abs(xLF-xLB)
+        w=[None] * (lo+1)
+        for x in range(xLF,xLB+1):
+            G=0
+            b=yLF
+            while True:
+                if maze[x][b]==1:
+                    break
+                else:
+                    b=b-1
+                    G=G+1
+            
+            w[h]=G
+            h=h+1
+        C=get_max(w)
+   
+    elif D=="S":
+        lo=abs(xLF-xLB)
+        s=[None] * (lo+1)
+        for x in range(xLB,xLF+1):
+            G=0
+            b=yLF
+            while True:
+                if maze[x][b]==1:
+                    break
+                else:
+                    b=b+1
+                    G=G+1
+            s[h]=G
+            h=h+1
+        C=get_max(s)
+    elif D=="D":
+        lo=abs(yLB-yLF)
+        d=[None] * (lo+1)
+        for x in range(yLB,yLF+1):
+            G=0
+            b=xLF
+            while True:
+                if maze[b][x]==1:
+                    break
+                else:
+                    b=b-1
+                    G=G+1
+            d[h]=G
+            h=h+1
+        C=get_max(d)
+    elif D=="A":
+        lo=abs(yLB-yLF)
+        a=[None] * (lo+1)
+        for x in range(yLF,yLB+1):
+            G=0
+            b=xLF
+            while True:
+                if maze[b][x]==1:
+                    break
+                else:
+                    b=b+1
+                    G=G+1
+            a[h]=G
+            h=h+1
+        C=get_max(a)
+    return C
         
             
 
@@ -361,7 +403,7 @@ def wallFollower(maze,goal,robot):
 
 
 if __name__=='__main__':
-    '''m=[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  #0
+    m=[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  #0
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],   #1
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],   #2
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],   #3
@@ -402,17 +444,17 @@ if __name__=='__main__':
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],#38
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]#39
     # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]'''
-    m = np.genfromtxt('V4\Map_Gen\map.csv', delimiter=',', skip_header=0)
-    ''' robot= [[35,4], #RF
-        [35,1],#LF
-        [38,4],#RB
-        [38,1]]#LB'''
+    #m = np.genfromtxt('V4\Map_Gen\map.csv', delimiter=',', skip_header=0)
+    robot= [[35,5], #RF
+        [35,2],#LF
+        [38,5],#RB
+        [38,2]]#LB
             
     
-    robot=[[1669, 259],
-           [1669, 78],
-           [1850,259],
-           [1850, 78]]
+    '''robot=[[448,993],
+           [548,993],
+           [448,1098],
+           [548,1098]]'''
     goal=[
         [11,29],
         [12,29],
