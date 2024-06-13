@@ -105,7 +105,7 @@ def love2(image,rgb = (181, 25, 110)):
     ret, thresh = cv2.threshold(extracted_regions,0,255,0)
     #extracted_regions = filler(extracted_regions)
     #likew, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    #for hi in likew:
+    #for hi in likew:c:\Users\Aditya\OneDrive - YA\Desktop\Picture1.png
     #    cv2.drawContours(extracted_regions, [hi], -1, (255, 255, 255),-1)
     # Save the output image (replace 'output_image.jpg' with your desired output file path)
     cv2.imwrite('output_image.jpg', extracted_regions)
@@ -162,8 +162,8 @@ def process_image(image, color_space, filter, edge_detection):
         image = edges  # Replace original image with edge detection result
 
     return image
-def save_processed_image(image, filename): #, filter, edge_detection=False color_space,
-  processed_image = love2(image) #process_image(image.copy(),color_space, filter, edge_detection)  # Process a copy
+def save_processed_image(image, filename,color_space, filter, edge_detection): #, filter, edge_detection=False color_space,
+  processed_image = process_image(image.copy(),color_space, filter, edge_detection)  # Process a copy love2(image)
   cv2.imwrite(filename, processed_image)  # Save the processed image
   print(f"Image processed and saved as: {filename}")
 def convert_to_maze_binary(image):
@@ -240,7 +240,7 @@ for _, row in df.iterrows():
                           row['Bottom_Right_X'],row['Bottom_Right_Y']))
 Robot = next((m for m in markers if m.ID == 4), None)
 Goal = next((m for m in markers if m.ID == 36), None)
-MAX_PIXEL= image.shape[1]/1.83*0.306
+MAX_PIXEL= image.shape[0]/315*21
 if (MAX_PIXEL-int(MAX_PIXEL))>0:
     MAX_PIXEL = int(MAX_PIXEL)+1
 else:
@@ -279,7 +279,7 @@ rgb_filter_teal = ((113, 141, 165), (122, 140, 149)) #tape
 
 height, width = image.shape[:2] # maze dimensions
 
-save_processed_image(image.copy(),"V4/Map_Gen/BIN_MAP.png")
+save_processed_image(image.copy(),"V4/Map_Gen/BIN_MAP.png","hsv",hsv_filter_red_dark,False)
 cv2.imwrite("V4/Map_Gen/FIN_MAP.png",convert_to_maze_binary(cv2.imread("V4/Map_Gen/BIN_MAP.png")))
 
 image_path = 'V4/Map_Gen/FIN_MAP.png' 
@@ -302,6 +302,8 @@ print(f"Array written to {output_file}")
 bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL*1.5),int(MAX_PIXEL*1.5),0)
 bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL+10,MAX_PIXEL+10,3)
+#bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
+
 colored_image = create_colored_image(bw_array)
 colored_image.save('V4/Map_Gen/MAP_REP.png')
 output_file = 'V4/Map_Gen/map.csv'
@@ -311,7 +313,7 @@ with open(output_file, 'w', newline='') as csvfile:
 print(f"Array written to {output_file}")
 
 
-IRL = 0.306/MAX_PIXEL
+IRL = 315/image.shape[0]
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
 write_array_to_file([direction,IRL],'V4/Map_Gen/map.txt')

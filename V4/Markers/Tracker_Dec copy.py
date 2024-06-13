@@ -49,7 +49,7 @@ Track4 = next((m for m in markers if m.ID == 3), None)
 
 
 # Load an image (replace 'your_image.jpg' with the actual image file path)
-image_path = 'v4/Map_Gen/RAW_MAP.png'
+image_path = 'v4/Map_Gen/RAWMAP.png'
 image = cv2.imread(image_path) # read the image capture
 rows,cols,ch = image.shape
 pts1 = np.float32([[Track1.Top_Right_X,Track1.Top_Right_Y],[Track2.Top_Left_X,Track2.Top_Left_Y],[Track3.Bottom_Right_X,Track3.Bottom_Right_Y],[Track4.Bottom_Left_X,Track4.Bottom_Left_Y]])

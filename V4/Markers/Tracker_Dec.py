@@ -64,7 +64,7 @@ import math
 import csv
 
 # Load an image (replace 'your_image.jpg' with the actual image file path)
-image_path = 'v4/Map_Gen/RAW_MAP.png'
+image_path = 'v4/Map_Gen/RAWMAP.png'
 #image_path = 'V4/Map_Gen/image.png'
 image = cv2.imread(image_path)
 
