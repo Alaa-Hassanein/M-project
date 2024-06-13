@@ -171,6 +171,15 @@ def convert_to_maze_binary(image):
       gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   else:
       gray_img = image
+
+  edges = cv2.Canny(gray_img, 200, 250, apertureSize=3)
+  minLineLength = 200
+  maxLineGap = 10
+  lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 100, minLineLength, maxLineGap)
+  for line in lines:
+     x1, y1, x2, y2 = line[0]
+     cv2.line(gray_img, (x1, y1), (x2, y2), (0, 255, 0),thickness=1)
+  
   ret, binary_img = cv2.threshold(gray_img, 1, 255, cv2.THRESH_BINARY)
   inverted_img = cv2.bitwise_not(binary_img)
   return inverted_img
