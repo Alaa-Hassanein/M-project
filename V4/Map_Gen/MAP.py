@@ -3,11 +3,6 @@ import cv2
 import numpy as np
 from PIL import Image
 import csv
-import os
-from rembg import remove
-
-
-
 def crop_center(img, new_width, new_height):
 
     # Get the original dimensions
@@ -24,7 +19,6 @@ def crop_center(img, new_width, new_height):
     #cv2.imwrite("cropped_image.jpg", cropped_img)
 
     return cropped_img
-
 def overlay_images(img1, img2):
 
     # Get the dimensions of the images
@@ -41,7 +35,6 @@ def overlay_images(img1, img2):
     # Save the result
     #cv2.imwrite(output_path, img2)
     return img2
-
 def filler(img):
     cropped = crop_center(img, 1080, 1918)
     ret, thresh = cv2.threshold(cropped,0,255,0)
@@ -55,12 +48,7 @@ def filler(img):
     #cv2.imwrite("final.jpg",finals)
     #cv2.waitKey(0)
     return final
-
-
-
-# Read the CSV file into a pandas DataFrame
 df = pd.read_csv('V4/Map_Gen/aruco_markers.csv')
-# Define the Marker class
 class Marker:
     def __init__(self, ID, center_x, center_y, height, width, angle_degrees,Top_Left_X,Top_Left_Y,Top_Right_X,Top_Right_Y,Bottom_Left_X,Bottom_Left_Y,Bottom_Right_X,Bottom_Right_Y ):
         self.ID = ID
@@ -83,16 +71,13 @@ def love2(image,rgb = (181, 25, 110)):
     def extract_color(image, target_rgb, tolerance=80):
         lower_bound = np.array([max(0, c - tolerance) for c in target_rgb], dtype=np.uint8)
         upper_bound = np.array([min(255, c + tolerance) for c in target_rgb], dtype=np.uint8)
-
         mask = cv2.inRange(image, lower_bound, upper_bound)
         extracted_color = cv2.bitwise_and(image, image, mask=mask)
-
         return extracted_color
     target_rgb = rgb
     #cv2.imwrite("1001.jpg",img_hsv)
     extracted_regions = extract_color(cv2.cvtColor(img_hsv,cv2.COLOR_BGR2RGB), target_rgb)
     cv2.imwrite("bool.png",extracted_regions)
-        
     # Apply edge detection (Canny)
     extracted_regions = cv2.cvtColor(extracted_regions,cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(extracted_regions, 30, 250, apertureSize=3)
@@ -103,11 +88,6 @@ def love2(image,rgb = (181, 25, 110)):
         x1, y1, x2, y2 = line[0]
         cv2.line(image, (x1, y1), (x2, y2), (0, 255, 0),thickness=1)
     ret, thresh = cv2.threshold(extracted_regions,0,255,0)
-    #extracted_regions = filler(extracted_regions)
-    #likew, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    #for hi in likew:c:\Users\Aditya\OneDrive - YA\Desktop\Picture1.png
-    #    cv2.drawContours(extracted_regions, [hi], -1, (255, 255, 255),-1)
-    # Save the output image (replace 'output_image.jpg' with your desired output file path)
     cv2.imwrite('output_image.jpg', extracted_regions)
     print("Pixelated lines straightened and saved as 'output_image.jpg'")
     return extracted_regions
@@ -162,7 +142,7 @@ def process_image(image, color_space, filter, edge_detection):
         image = edges  # Replace original image with edge detection result
 
     return image
-def save_processed_image(image, filename,color_space, filter, edge_detection): #, filter, edge_detection=False color_space,
+def save_processed_image(image, filename,color_space, filter, edge_detection): #
   processed_image = process_image(image.copy(),color_space, filter, edge_detection)  # Process a copy love2(image)
   cv2.imwrite(filename, processed_image)  # Save the processed image
   print(f"Image processed and saved as: {filename}")
@@ -237,8 +217,6 @@ def create_colored_image(array):
     return Image.fromarray(image_data)
 markers = []
 picname = "V4/Map_Gen/QWERTY_MAP.png"
-#picname = "C:/Users/Aditya/Downloads/Screenshot 2024-06-04 123654.png"
-#picname = 'V4/Map_Gen/image.png'
 image = cv2.imread(picname)
 for _, row in df.iterrows():
     markers.append(Marker(row['ID'], row['Center_X'], row['Center_Y'],
@@ -265,39 +243,17 @@ elif Robot.angle>170 or Robot.angle<-170:
     direction = 'S'
 else:
     direction = 'NaN'
-
-
-
-hsv_filter_green = ((35, 50, 50), (75, 255, 255))  # Green
 hsv_filter_red_dark = ((0, 100, 100), (10, 255, 255)) # Red (for darker shades)
 hsv_filter_red_bright = ((170, 100, 100), (180, 255, 255)) # Red (for brighter shades)
-hsv_filter_blue = ((100, 100, 100), (140, 255, 255))  # Blue
-hsv_filter_brown = ((40, 0.2, 0.3), (50, 0.4, 1.0))
-hsv_filter_teal = ((190, 20, 40), (220, 255, 255)) #tape 
-rgb_filter_teal = ((113, 141, 165), (122, 140, 149)) #tape
-
-
-#dst = cv2.imwrite("confrim.png",remove(image)) # read the image capture
-#rows,cols,ch = image.shape
-#pts1 = np.float32([[Track1.Top_Right_X,Track1.Top_Right_Y],[Track2.Top_Left_X,Track2.Top_Left_Y],[Track3.Bottom_Right_X,Track3.Bottom_Right_Y],[Track4.Bottom_Left_X,Track4.Bottom_Left_Y]])
-#pts2 = np.float32([[0,0],[1080,0],[1080,1920],[0,1920]])
-#M = cv2.getPerspectiveTransform(pts1,pts2)
-#image = cv2.warpPerspective(image,M,(cols,rows))
-
-#cv2.imwrite("trial.png",image)
-
 height, width = image.shape[:2] # maze dimensions
-
 save_processed_image(image.copy(),"V4/Map_Gen/BIN_MAP.png","hsv",hsv_filter_red_dark,False)
 cv2.imwrite("V4/Map_Gen/FIN_MAP.png",convert_to_maze_binary(cv2.imread("V4/Map_Gen/BIN_MAP.png")))
-
 image_path = 'V4/Map_Gen/FIN_MAP.png' 
 bw_array = read_bw_image(image_path)
 Robot.x = int(Robot.x)
 Robot.y = int(Robot.y)
 Goal.x = int(Goal.x)
 Goal.y = int(Goal.y)
-
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Goal.x,Goal.y),int(MAX_PIXEL+1),int(MAX_PIXEL+1),0)
 output_file = 'V4/Map_Gen/map_clean.csv'
@@ -307,12 +263,9 @@ with open(output_file, 'w', newline='') as csvfile:
 colored_image = create_colored_image(bw_array)
 colored_image.save('V4/Map_Gen/MAP_CLEAN.png')
 print(f"Array written to {output_file}")
-
 bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
 bw_array,x_start,x_end,y_start,y_end= modify_array(bw_array,(Robot.x,Robot.y),int(MAX_PIXEL*1.5),int(MAX_PIXEL*1.5),0)
 bw_array,gsx,gex,gsy,gey = modify_array(bw_array,(Goal.x,Goal.y),MAX_PIXEL+10,MAX_PIXEL+10,3)
-#bw_array,rsx,rex,rsy,rey = modify_array(bw_array,(Robot.x,Robot.y),MAX_PIXEL,MAX_PIXEL,2)
-
 colored_image = create_colored_image(bw_array)
 colored_image.save('V4/Map_Gen/MAP_REP.png')
 output_file = 'V4/Map_Gen/map.csv'
@@ -320,8 +273,6 @@ with open(output_file, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(bw_array)
 print(f"Array written to {output_file}")
-
-
 IRL = 315/image.shape[0]
 robotloc = [(rsx,rsy),(rex,rsy),(rex,rey),(rsx,rey)]
 goalloc = [(gsx,gsy),(gex,gsy),(gex,gey),(gsx,gey)]
